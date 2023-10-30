@@ -53,7 +53,7 @@
   users.users.sun = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    hashedPassword = "$6$FRJMcqc2xYxSU.UI$UflLN52k2RPZqv1tejI27PoCHmWF9mCMcfMiU2EiYOf.k8Ui02dan9TywRsfCIe3wst0LnTLoFR682AP/y0gm1";
+    hashedPassword = "$6$LGB3t5LJcG8rw7mI$g742xnNIGdg8HdvdAWU9l0DCDh0wtzrLMCmF9BJkLSwNN56ALIJVPLN1XvJEqdE./Od57yiPy5zQ7aYgUZoxt.";
     packages = with pkgs; [
       firefox
     ];
@@ -96,5 +96,5 @@
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
 
-  system.stateVersion = "23.05"; # Did you read the comment?
+  system.stateVersion = "23.11";
 }
