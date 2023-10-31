@@ -65,6 +65,17 @@
     vim
   ];
 
+  environment.persistence."/persist" = {
+    files = [
+      "/etc/machine-id"
+    ];
+    users.sun = {
+      directories = [
+        "Projects"
+      ];
+    };
+  };
+
   nix.settings = {
     trusted-users = [ "root" "sun" ];
     auto-optimise-store = true;
