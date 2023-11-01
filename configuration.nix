@@ -14,10 +14,24 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/efi";
 
-  # networking.hostName = "nixos"; # Define your hostname.
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking = {
+    hostName = "nixos";
+    useNetworkd = true;
+    useDHCP = false;
+    wireless.iwd.enable = true;
+  };
+  systemd.network.networks = {
+    "10-wlan" = {
+      name = "wl*";
+      DHCP = "yes";
+      dhcpV4Config.RouteMetric = 2048;
+      dhcpV6Config.RouteMetric = 2048;
+    };
+    "10-enther" = {
+      name = "en*";
+      DHCP = "yes";
+    };
+  };
 
   time.timeZone = "Asia/Shanghai";
 
@@ -72,6 +86,7 @@
     users.sun = {
       directories = [
         "Projects"
+        { directory = ".ssh"; mode = "0700"; }
       ];
     };
   };
