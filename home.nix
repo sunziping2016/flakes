@@ -9,5 +9,10 @@
 
   programs.gpg.enable = true;
 
+  xdg = {
+    enable = true;
+    userDirs.enable = true;
+  };
+
   home.stateVersion = "23.11";
 }
