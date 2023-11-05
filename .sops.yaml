@@ -1,0 +1,9 @@
+keys:
+  - &user_sun 8CC5C91F72DB57DA20BD848C6523836CF4992251
+  - &host_desktop age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq
+creation_rules:
+  - key_groups:
+    - pgp:
+        - *user_sun
+      age:
+        - *host_desktop

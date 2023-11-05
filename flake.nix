@@ -7,10 +7,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # TODO(layout): use submodule by directories, see <https://github.com/Misterio77/nix-starter-configs/tree/main>
-  outputs = { flake-parts, nixpkgs, home-manager, impermanence, ... }@inputs:
+  outputs = { flake-parts, nixpkgs, home-manager, impermanence, sops-nix, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake = {
         nixosConfigurations = {
@@ -27,6 +31,7 @@
                 home-manager.extraSpecialArgs = { inherit inputs; };
               }
               impermanence.nixosModules.impermanence
+              sops-nix.nixosModules.sops
             ];
           };
         };

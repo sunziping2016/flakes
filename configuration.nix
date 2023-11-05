@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ pkgs, ... }:
+{ pkgs, config, ... }:
 
 {
   imports = [
@@ -64,14 +64,26 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    # see Mic92/sops-nix#167 for setting up with impermanence
+    age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+    gnupg.sshKeyPaths = [];
+    secrets = {
+      "iwd.ChinaNet-sun" = {};
+      "users.sun.hashedPassword".neededForUsers = true;
+    };
+  };
+
   users.users.sun = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
-    hashedPassword = "$6$LGB3t5LJcG8rw7mI$g742xnNIGdg8HdvdAWU9l0DCDh0wtzrLMCmF9BJkLSwNN56ALIJVPLN1XvJEqdE./Od57yiPy5zQ7aYgUZoxt.";
-    packages = with pkgs; [
-      firefox
-    ];
+    hashedPasswordFile = config.sops.secrets."users.sun.hashedPassword".path;
   };
+
+  systemd.tmpfiles.rules = [
+    "C /var/lib/iwd/ChinaNet-sun.psk       - - - - ${config.sops.secrets."iwd.ChinaNet-sun".path}"
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -82,11 +94,16 @@
   environment.persistence."/persist" = {
     files = [
       "/etc/machine-id"
+      "/etc/ssh/ssh_host_ed25519_key"
+      "/etc/ssh/ssh_host_ed25519_key.pub"
+      "/etc/ssh/ssh_host_rsa_key"
+      "/etc/ssh/ssh_host_rsa_key.pub"
     ];
     users.sun = {
       directories = [
         "Projects"
         { directory = ".ssh"; mode = "0700"; }
+        { directory = ".gnupg"; mode = "0700"; }
       ];
     };
   };
@@ -110,6 +127,7 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.pcscd.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
