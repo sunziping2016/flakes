@@ -21,15 +21,158 @@
     wireless.iwd.enable = true;
   };
   systemd.network.networks = {
-    "10-wlan" = {
+    "10-sing0" = {
+      name = "sing0";
+      networkConfig = {
+        Address = "172.19.0.1/30";
+        DNS = "172.19.0.2";
+        DNSDefaultRoute = "no";
+        ConfigureWithoutCarrier = "yes";
+        Domains = "~.";
+      };
+      routes = [{
+        routeConfig = {
+          Destination = "198.18.0.0/15";
+        };
+      }];
+    };
+    "20-wlan" = {
       name = "wl*";
       DHCP = "yes";
       dhcpV4Config.RouteMetric = 2048;
       dhcpV6Config.RouteMetric = 2048;
     };
-    "10-enther" = {
+    "20-enther" = {
       name = "en*";
       DHCP = "yes";
+    };
+  };
+  systemd.network.netdevs = {
+    sing0 = {
+      netdevConfig = {
+        Name = "sing0";
+        Kind = "tun";
+      };
+    };
+  };
+
+  sops.templates."sing-box.json" = {
+    content = ''
+      {
+        "experimental": {
+          "clash_api": {
+            "store_fakeip": true
+          }
+        },
+        "dns": {
+          "servers": [
+            {
+              "tag": "google",
+              "address": "tls://8.8.8.8"
+            },
+            {
+              "tag": "local",
+              "address": "223.5.5.5",
+              "detour": "direct"
+            },
+            {
+              "tag": "remote",
+              "address": "fakeip"
+            },
+            {
+              "tag": "block",
+              "address": "rcode://success"
+            }
+          ],
+          "rules": [
+            {
+              "geosite": "category-ads-all",
+              "server": "block",
+              "disable_cache": true
+            },
+            {
+              "outbound": "any",
+              "server": "local"
+            },
+            {
+              "geosite": "cn",
+              "server": "local"
+            },
+            {
+              "query_type": ["A", "AAAA"],
+              "server": "remote"
+            }
+          ],
+          "fakeip": {
+            "enabled": true,
+            "inet4_range": "198.18.0.0/15",
+            "inet6_range": "fc00::/18"
+          },
+          "independent_cache": true,
+          "strategy": "ipv4_only"
+        },
+        "inbounds": [
+          {
+            "type": "tun",
+            "interface_name": "sing0",
+            "inet4_address": "172.19.0.1/30",
+            "sniff": true
+          },
+          {
+            "type": "mixed",
+            "listen": "::",
+            "listen_port": 12311
+          }
+        ],
+        "outbounds": [
+          ${config.sops.placeholder."sing-box.outbounds.default"},
+          {
+            "type": "direct",
+            "tag": "direct"
+          },
+          {
+            "type": "block",
+            "tag": "block"
+          },
+          {
+            "type": "dns",
+            "tag": "dns-out"
+          }
+        ],
+        "route": {
+          "rules": [
+            {
+              "protocol": "dns",
+              "outbound": "dns-out"
+            },
+            {
+              "geosite": "cn",
+              "geoip": ["private", "cn"],
+              "outbound": "direct"
+            },
+            {
+              "geosite": "category-ads-all",
+              "outbound": "block"
+            }
+          ],
+          "auto_detect_interface": true
+        }
+      }
+    '';
+    owner = "nobody";
+  };
+  systemd.services.sing-box = {
+    enable = true;
+    description = "Sing-box networking service";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      ExecStart = "${pkgs.sing-box}/bin/sing-box run -c ${config.sops.templates."sing-box.json".path}";
+      AmbientCapabilities = "CAP_NET_BIND_SERVICE";
+      User = "nobody";
+      Group = "nobody";
+      WorkingDirectory = "/tmp";
+      Restart = "on-failure";
     };
   };
 
@@ -68,6 +211,7 @@
     secrets = {
       "iwd.ChinaNet-sun" = {};
       "users.sun.hashedPassword".neededForUsers = true;
+      "sing-box.outbounds.default" = {};
     };
   };
 
@@ -132,7 +276,7 @@
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
