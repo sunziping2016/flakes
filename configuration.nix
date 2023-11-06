@@ -55,6 +55,8 @@
   # sound.enable = true;
   # hardware.pulseaudio.enable = true;
 
+  hardware.bluetooth.enable = true;
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -92,6 +94,9 @@
       "/etc/ssh/ssh_host_ed25519_key.pub"
       "/etc/ssh/ssh_host_rsa_key"
       "/etc/ssh/ssh_host_rsa_key.pub"
+    ];
+    directories = [
+      "/var/lib/bluetooth"
     ];
     users.sun = {
       directories = [
