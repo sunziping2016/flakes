@@ -244,6 +244,12 @@
     ];
     users.sun = {
       directories = [
+        ".cache"
+        ".config"
+        ".local"
+        ".vscode"
+        "Documents"
+        "Downloads"
         "Projects"
         { directory = ".ssh"; mode = "0700"; }
         { directory = ".gnupg"; mode = "0700"; }
@@ -257,6 +263,7 @@
     experimental-features = [ "nix-command" "flakes" "auto-allocate-uids" "cgroups" ];
     use-cgroups = true;
   };
+  nixpkgs.config.allowUnfree = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -271,6 +278,7 @@
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   services.pcscd.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
