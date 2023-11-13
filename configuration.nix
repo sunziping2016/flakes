@@ -235,6 +235,14 @@
   };
   programs.fish.enable = true;
 
+
+  security.sudo = {
+    extraConfig = ''
+      Defaults lecture="never"
+    '';
+    wheelNeedsPassword = false;
+  };
+
   systemd.tmpfiles.rules = [
     "C /var/lib/iwd/ChinaNet-sun.psk       - - - - ${config.sops.secrets."iwd.ChinaNet-sun".path}"
   ];
