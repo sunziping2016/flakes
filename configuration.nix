@@ -226,7 +226,9 @@
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     hashedPasswordFile = config.sops.secrets."users.sun.hashedPassword".path;
+    shell = pkgs.fish;
   };
+  programs.fish.enable = true;
 
   systemd.tmpfiles.rules = [
     "C /var/lib/iwd/ChinaNet-sun.psk       - - - - ${config.sops.secrets."iwd.ChinaNet-sun".path}"
