@@ -175,6 +175,11 @@
       Restart = "on-failure";
     };
   };
+  systemd.network.wait-online = {
+    anyInterface = true;
+    ignoredInterfaces = [ "sing0" ];
+  };
+
 
   time.timeZone = "Asia/Shanghai";
 
