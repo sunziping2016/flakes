@@ -229,11 +229,11 @@
     defaultSopsFile = ./secrets.yaml;
     # see Mic92/sops-nix#167 for setting up with impermanence
     age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
-    gnupg.sshKeyPaths = [];
+    gnupg.sshKeyPaths = [ ];
     secrets = {
-      "iwd.ChinaNet-sun" = {};
+      "iwd.ChinaNet-sun" = { };
       "users.sun.hashedPassword".neededForUsers = true;
-      "sing-box.outbounds.default" = {};
+      "sing-box.outbounds.default" = { };
     };
   };
 

@@ -1,4 +1,4 @@
-{ system, inputs }:
+{ system, inputs, ... }:
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
   modules = [
