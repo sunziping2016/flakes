@@ -12,27 +12,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
-
-  # TODO(layout): use submodule by directories, see <https://github.com/Misterio77/nix-starter-configs/tree/main>
-  outputs = { flake-parts, nixpkgs, home-manager, impermanence, sops-nix, ... }@inputs:
+  outputs = { flake-parts, ... }@inputs:
     flake-parts.lib.mkFlake { inherit inputs; } {
       flake = {
         nixosConfigurations = {
-          desktop = nixpkgs.lib.nixosSystem {
+          desktop = import ./nixos/desktop {
             system = "x86_64-linux";
-            modules = [
-              ./configuration.nix
-              # For options, see <https://mipmip.github.io/home-manager-option-search/>
-              home-manager.nixosModules.home-manager
-              {
-                home-manager.useGlobalPkgs = true;
-                home-manager.useUserPackages = true;
-                home-manager.users.sun = import ./home.nix;
-                home-manager.extraSpecialArgs = { inherit inputs; };
-              }
-              impermanence.nixosModules.impermanence
-              sops-nix.nixosModules.sops
-            ];
+            inherit inputs;
           };
         };
       };
