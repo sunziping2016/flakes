@@ -183,7 +183,15 @@
 
   time.timeZone = "Asia/Shanghai";
 
-  i18n.defaultLocale = "C.UTF-8";
+  i18n = {
+    defaultLocale = "C.UTF-8";
+    inputMethod = {
+      enabled = "fcitx5";
+      fcitx5.addons = with pkgs; [
+        fcitx5-chinese-addons
+      ];
+    };
+  };
 
   # Enable the X11 windowing system.
   services.xserver = {
