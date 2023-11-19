@@ -34,7 +34,6 @@
   programs.vscode.enable = true;
 
   home.packages = with pkgs; [
-    _1password-gui
     microsoft-edge
   ];
 

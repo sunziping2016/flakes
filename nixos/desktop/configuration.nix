@@ -262,6 +262,7 @@
   environment.systemPackages = with pkgs; [
     vim
   ];
+  programs._1password-gui.enable = true;
 
   environment.persistence."/persist" = {
     files = [
