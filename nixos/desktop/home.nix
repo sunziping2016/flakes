@@ -9,7 +9,12 @@
     };
   };
 
-  programs.fish.enable = true;
+  programs.fish = {
+    enable = true;
+    plugins = with pkgs.fishPlugins; [
+      { name = "tide"; src = tide.src; }
+    ];
+  };
   programs.gpg.enable = true;
   # xfce4-session will launch gpg=agent by default.
   # See <https://docs.xfce.org/xfce/xfce4-session/advanced> for details.
