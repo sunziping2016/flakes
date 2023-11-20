@@ -15,6 +15,10 @@
       { name = "tide"; src = tide.src; }
     ];
   };
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
   programs.gpg.enable = true;
   # xfce4-session will launch gpg=agent by default.
   # See <https://docs.xfce.org/xfce/xfce4-session/advanced> for details.
