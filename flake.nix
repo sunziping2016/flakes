@@ -35,6 +35,7 @@
           devShells.default = with pkgs; mkShell {
             nativeBuildInputs = [
               colmena
+              (opentofu.withPlugins (ps: with ps; [ sops alicloud ]))
             ];
           };
         }
