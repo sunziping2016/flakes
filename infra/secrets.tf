@@ -11,3 +11,10 @@ provider "alicloud" {
   secret_key = local.secrets.aliyun.secret_key
   region     = "cn-hangzhou"
 }
+
+provider "alicloud" {
+  alias      = "zjk"
+  access_key = local.secrets.aliyun.access_key
+  secret_key = local.secrets.aliyun.secret_key
+  region     = "cn-zhangjiakou"
+}
