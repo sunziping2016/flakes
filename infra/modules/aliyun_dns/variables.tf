@@ -1,10 +1,8 @@
 variable "domain" {
-  description = "The name of domain."
-  type        = string
+  type = string
 }
 
 variable "records" {
-  description = "The records of domain."
   type = map(object({
     host_record = string
     type        = string

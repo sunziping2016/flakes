@@ -1,0 +1,30 @@
+{
+  "nodes": {
+    "sensitive": false,
+    "type": [
+      "object",
+      {
+        "aliyun-hz0": [
+          "object",
+          {
+            "fqdn": "string",
+            "ipv4": "string",
+            "ipv6": "string",
+            "tags": [
+              "tuple",
+              []
+            ]
+          }
+        ]
+      }
+    ],
+    "value": {
+      "aliyun-hz0": {
+        "fqdn": "hz0.szp15.com",
+        "ipv4": "47.99.94.121",
+        "ipv6": "2408:4005:307:1040:806f:32a8:d8b2:507c",
+        "tags": []
+      }
+    }
+  }
+}
