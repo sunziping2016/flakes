@@ -15,6 +15,7 @@ module "aliyun_security_group_hz" {
   source = "./modules/aliyun_security_group"
   vpc_id = module.aliyun_vpc_hz.vpc_id
   rules = {
+    icmp     = { ip_protocol = "icmp", cidr_ip = "0.0.0.0/0" }
     ssh_ipv4 = { port_range = "22/22", cidr_ip = "0.0.0.0/0" }
     ssh_ipv6 = { port_range = "22/22", ipv6_cidr_ip = "::/0" }
   }
@@ -33,12 +34,21 @@ resource "alicloud_instance" "hz0" {
   key_name             = "cardno:19_795_283"
 }
 
-module "aliyun_nat_hz" {
-  source     = "./modules/aliyun_nat"
-  vpc_id     = module.aliyun_vpc_hz.vpc_id
-  vswitch_id = module.aliyun_vpc_hz.vswhitch_ids.hz_h
-  forward_entries = {
-    ssh = { external_port = "22", internal_port = "22", internal_ip = alicloud_instance.hz0.private_ip }
+# module "aliyun_nat_hz" {
+#   source     = "./modules/aliyun_nat"
+#   vpc_id     = module.aliyun_vpc_hz.vpc_id
+#   vswitch_id = module.aliyun_vpc_hz.vswhitch_ids.hz_h
+#   forward_entries = {
+#     ssh = { external_port = "22", internal_port = "22", internal_ip = alicloud_instance.hz0.private_ip }
+#   }
+# }
+
+module "aliyun_ipv4_hz" {
+  source             = "./modules/aliyun_ipv4"
+  vpc_id             = module.aliyun_vpc_hz.vpc_id
+  vpc_route_table_id = module.aliyun_vpc_hz.route_table_id
+  instance_ids = {
+    hz0 = alicloud_instance.hz0.id
   }
 }
 
@@ -54,7 +64,7 @@ module "aliyun_dns" {
   source = "./modules/aliyun_dns"
   domain = "szp15.com"
   records = {
-    hz0_A    = { host_record = "hz0", type = "A", value = module.aliyun_nat_hz.ip_address }
+    hz0_A    = { host_record = "hz0", type = "A", value = module.aliyun_ipv4_hz.ip_addresses.hz0 }
     hz0_AAAA = { host_record = "hz0", type = "AAAA", value = module.aliyun_ipv6_hz.ipv6_addresses.hz0 }
 
     zjk0_A    = { host_record = "zjk0", type = "A", value = "47.92.30.246" }
@@ -72,7 +82,7 @@ locals {
   aliyun_nodes = {
     aliyun-hz0 = {
       fqdn = "hz0.szp15.com"
-      ipv4 = module.aliyun_nat_hz.ip_address
+      ipv4 = module.aliyun_ipv4_hz.ip_addresses.hz0
       ipv6 = module.aliyun_ipv6_hz.ipv6_addresses.hz0
       tags = []
     }

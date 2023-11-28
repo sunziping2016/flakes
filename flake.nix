@@ -61,7 +61,7 @@
           #     --kexec path/to/nixos-kexec-installer-noninteractive-x86_64-linux.tar.gz --no-substitute-on-destination
           (name: node: {
             deployment = {
-              targetHost = "root@${node.fqdn}";
+              targetHost = "${node.fqdn}";
               tags = node.tags;
             };
             imports = [ ./nixos/${name} ];
