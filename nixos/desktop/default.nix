@@ -1,4 +1,4 @@
-{ system, inputs, ... }:
+{ self, system, inputs, ... }:
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
   modules = [
@@ -13,6 +13,10 @@ inputs.nixpkgs.lib.nixosSystem {
     }
     inputs.impermanence.nixosModules.impermanence
     inputs.sops-nix.nixosModules.sops
+    {
+      nix.settings.nix-path = [ "nixpkgs=${inputs.nixpkgs}" ];
+      nix.registry.p.flake = self;
+    }
   ];
   specialArgs = {
     inherit inputs;

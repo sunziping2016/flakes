@@ -3,7 +3,6 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 
 { pkgs, config, ... }:
-
 {
   imports = [
     ./hardware.nix
@@ -293,6 +292,7 @@
   nix.settings = {
     trusted-users = [ "root" "sun" ];
     auto-optimise-store = true;
+    flake-registry = "/etc/nix/registry.json";
     experimental-features = [ "nix-command" "flakes" "auto-allocate-uids" "cgroups" ];
     use-cgroups = true;
   };
