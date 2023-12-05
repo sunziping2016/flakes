@@ -39,6 +39,7 @@
             ];
           };
       }) // {
+        nixosModules = import ./modules;
         nixosConfigurations = {
           desktop = import ./nixos/desktop {
             system = "x86_64-linux";

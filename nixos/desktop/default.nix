@@ -3,6 +3,7 @@ inputs.nixpkgs.lib.nixosSystem {
   inherit system;
   modules = [
     ./configuration.nix
+    self.nixosModules.default
     # For options, see <https://mipmip.github.io/home-manager-option-search/>
     inputs.home-manager.nixosModules.home-manager
     {
