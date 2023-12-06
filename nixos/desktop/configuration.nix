@@ -36,18 +36,6 @@
         };
       }];
     };
-    "10-podman0" = {
-      name = "podman0";
-      linkConfig = {
-        ActivationPolicy = "manual";
-      };
-      networkConfig = {
-        KeepConfiguration = "static";
-        DNS = "10.88.0.1";
-        Domains = "dns.podman";
-        DNSDefaultRoute = "no";
-      };
-    };
     "20-wlan" = {
       name = "wl*";
       DHCP = "yes";
@@ -253,21 +241,9 @@
     pulse.enable = true;
   };
 
-  virtualisation = {
-    podman = {
-      enable = true;
-      autoPrune.enable = true;
-      defaultNetwork.settings = { dns_enabled = true; };
-    };
-    containers = {
-      storage.settings = {
-        storage = {
-          driver = "btrfs";
-          graphroot = "/var/lib/containers/storage";
-          runroot = "/run/containers/storage";
-        };
-      };
-    };
+  environment.virtualization = {
+    enable = true;
+    network.enable = true;
   };
 
   # Enable touchpad support (enabled default in most desktopManager).
@@ -322,7 +298,6 @@
     ];
     directories = [
       "/var/lib/bluetooth"
-      "/var/lib/containers"
     ];
     users.sun = {
       directories = [

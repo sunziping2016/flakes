@@ -11,6 +11,7 @@
   users.users.root.openssh.authorizedKeys.keys = data.keys;
 
   environment.baseline.enable = true;
+  environment.virtualization.enable = true;
 
   environment.persistence."/persist" = {
     files = [
