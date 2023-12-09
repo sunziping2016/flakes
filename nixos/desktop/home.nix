@@ -1,4 +1,7 @@
 { pkgs, ... }: {
+  imports = [
+    ./helix.nix
+  ];
   programs.git = {
     enable = true;
     userName = "Ziping Sun";
