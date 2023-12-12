@@ -1,4 +1,4 @@
-{ modulesPath, data, ... }: {
+{ config, modulesPath, data, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
   ];
@@ -8,10 +8,23 @@
   boot.loader.efi.efiSysMountPoint = "/efi";
   services.openssh.enable = true;
 
+  sops = {
+    defaultSopsFile = ../secrets.enc.yaml;
+    age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
+    gnupg.sshKeyPaths = [ ];
+    secrets = {
+      "sing-box-outbound.json" = { };
+    };
+  };
+
   users.users.root.openssh.authorizedKeys.keys = data.keys;
 
   environment.baseline.enable = true;
   environment.virtualization.enable = true;
+  environment.sing-box = {
+    enable = true;
+    outboundFile = config.sops.secrets."sing-box-outbound.json".path;
+  };
 
   environment.persistence."/persist" = {
     files = [
