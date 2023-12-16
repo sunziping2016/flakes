@@ -142,6 +142,7 @@
         ".cache"
         ".config"
         ".local"
+        ".npm"
         ".vscode"
         "Documents"
         "Downloads"

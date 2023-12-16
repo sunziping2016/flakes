@@ -1,7 +1,9 @@
-{ pkgs, ... }: {
+{ pkgs, self, ... }: {
   imports = [
     ./helix.nix
+    self.homeManagerModules.nvim
   ];
+
   programs.git = {
     enable = true;
     userName = "Ziping Sun";

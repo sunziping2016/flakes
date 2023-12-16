@@ -10,7 +10,7 @@ inputs.nixpkgs.lib.nixosSystem {
       home-manager.useGlobalPkgs = true;
       home-manager.useUserPackages = true;
       home-manager.users.sun = import ./home.nix;
-      home-manager.extraSpecialArgs = { inherit inputs; };
+      home-manager.extraSpecialArgs = { inherit self inputs; };
     }
     inputs.impermanence.nixosModules.impermanence
     inputs.sops-nix.nixosModules.sops
@@ -19,7 +19,5 @@ inputs.nixpkgs.lib.nixosSystem {
       nix.registry.p.flake = self;
     }
   ];
-  specialArgs = {
-    inherit inputs;
-  };
+  specialArgs = { inherit self inputs; };
 }

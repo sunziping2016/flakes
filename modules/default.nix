@@ -1,3 +1,4 @@
 {
-  default = import ./default;
+  nixosModules.default = import ./default;
+  homeManagerModules.nvim =  import ./nvim;
 }

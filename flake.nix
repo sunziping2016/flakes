@@ -27,6 +27,7 @@
     let
       lib = inputs.nixpkgs.lib;
       data = lib.importJSON ./infra/data.json;
+      modules = import ./modules;
     in flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ] (system:
       let pkgs = import nixpkgs { inherit system; };
       in {
@@ -39,7 +40,8 @@
             ];
           };
       }) // {
-        nixosModules = import ./modules;
+        nixosModules = modules.nixosModules;
+        homeManagerModules = modules.homeManagerModules;
         nixosConfigurations = {
           desktop = import ./nixos/desktop {
             system = "x86_64-linux";
