@@ -1,9 +1,13 @@
-{ lib, config, ... }:
+{ lib, config, inputs, ... }:
 let
   cfg = config.environment.virtualization;
 in
 with lib;
 {
+  imports = [
+    inputs.arion.nixosModules.arion
+  ];
+
   options.environment.virtualization = {
     enable = mkEnableOption "Enable podman with Btrfs storage";
     network.enable = mkEnableOption "Enable DNS on default bridge";
@@ -32,6 +36,8 @@ with lib;
           };
         };
       };
+      oci-containers.backend = "podman";
+      arion.backend = "podman-socket";
     };
 
     systemd.network.networks = mkIf cfg.network.enable {

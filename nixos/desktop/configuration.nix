@@ -101,7 +101,7 @@
 
   users.users.sun = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [ "wheel" "podman" ];
     hashedPasswordFile = config.sops.secrets."users.sun.hashedPassword".path;
     shell = pkgs.fish;
   };
