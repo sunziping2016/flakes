@@ -7,6 +7,7 @@
   imports = [
     ./hardware.nix
     ./nvidia.nix
+    ./xfce.nix
   ];
 
   # Use the systemd-boot EFI boot loader.

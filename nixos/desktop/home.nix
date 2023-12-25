@@ -47,10 +47,6 @@
   };
   programs.vscode.enable = true;
 
-  home.packages = with pkgs; [
-    microsoft-edge
-  ];
-
   xdg = {
     enable = true;
     userDirs.enable = true;
