@@ -16,6 +16,9 @@
 
   programs.fish = {
     enable = true;
+    interactiveShellInit = ''
+      set fish_greeting # Disable greeting
+    '';
     plugins = with pkgs.fishPlugins; [
       { name = "tide"; src = tide.src; }
     ];
