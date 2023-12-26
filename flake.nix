@@ -26,8 +26,12 @@
       url = "github:hercules-ci/arion";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    devenv = {
+      url = "github:cachix/devenv";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-  outputs = { self, flake-utils, nixpkgs, ... }@inputs:
+  outputs = { self, flake-utils, nixpkgs, devenv, ... }@inputs:
     let
       lib = inputs.nixpkgs.lib;
       modules = import ./modules;
@@ -68,15 +72,33 @@
           let
             pkgs = import nixpkgs { inherit system; };
           in
-          {
+          rec {
             legacyPackages = pkgs;
-            devShells.default = with pkgs;
-              mkShell {
-                nativeBuildInputs = [
-                  colmena
-                  (opentofu.withPlugins (ps: with ps; [ sops alicloud ]))
-                ];
-              };
+            devShells.default = devenv.lib.mkShell {
+              inherit inputs pkgs;
+              modules = [
+                ({ pkgs, config, ... }:
+                  let
+                    my-opentofu = pkgs.opentofu.withPlugins (ps: with ps; [ sops alicloud ]);
+                  in
+                  {
+                    # This is your devenv configuration
+                    packages = with pkgs; [
+                      colmena
+                      my-opentofu
+                      sops
+                    ];
+                    pre-commit.hooks.nixpkgs-fmt.enable = true;
+                    pre-commit.hooks.my-opentofu-fmt = {
+                      enable = true;
+                      name = "opentofu-fmt";
+                      entry = "${my-opentofu}/bin/tofu fmt";
+                      files = "\\.tf$";
+                    };
+                  })
+              ];
+            };
+            packages.devenv-up = devShells.default.config.procfileScript;
           }
         )
     ) //

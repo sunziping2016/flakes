@@ -1,3 +1,9 @@
 .direnv/
 .vscode/
 secrets.yaml
+
+# devenv
+result
+result-*
+.pre-commit-config.yaml
+.devenv*
