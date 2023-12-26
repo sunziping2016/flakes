@@ -15,9 +15,13 @@ module "aliyun_security_group_hz" {
   source = "./modules/aliyun_security_group"
   vpc_id = module.aliyun_vpc_hz.vpc_id
   rules = {
-    icmp     = { ip_protocol = "icmp", cidr_ip = "0.0.0.0/0" }
-    ssh_ipv4 = { port_range = "22/22", cidr_ip = "0.0.0.0/0" }
-    ssh_ipv6 = { port_range = "22/22", ipv6_cidr_ip = "::/0" }
+    icmp       = { ip_protocol = "icmp", cidr_ip = "0.0.0.0/0" }
+    ssh_ipv4   = { port_range = "22/22", cidr_ip = "0.0.0.0/0" }
+    ssh_ipv6   = { port_range = "22/22", ipv6_cidr_ip = "::/0" }
+    http_ipv4  = { port_range = "80/80", cidr_ip = "0.0.0.0/0" }
+    http_ipv6  = { port_range = "80/80", ipv6_cidr_ip = "::/0" }
+    https_ipv4 = { port_range = "443/443", cidr_ip = "0.0.0.0/0" }
+    https_ipv6 = { port_range = "443/443", ipv6_cidr_ip = "::/0" }
   }
 }
 
@@ -33,15 +37,6 @@ resource "alicloud_instance" "hz0" {
   ipv6_address_count   = 1
   key_name             = "cardno:19_795_283"
 }
-
-# module "aliyun_nat_hz" {
-#   source     = "./modules/aliyun_nat"
-#   vpc_id     = module.aliyun_vpc_hz.vpc_id
-#   vswitch_id = module.aliyun_vpc_hz.vswhitch_ids.hz_h
-#   forward_entries = {
-#     ssh = { external_port = "22", internal_port = "22", internal_ip = alicloud_instance.hz0.private_ip }
-#   }
-# }
 
 module "aliyun_ipv4_hz" {
   source             = "./modules/aliyun_ipv4"
@@ -74,6 +69,7 @@ module "aliyun_dns" {
     god      = { host_record = "god", type = "CNAME", value = "zjk0.szp15.com" }
     commento = { host_record = "commento", type = "CNAME", value = "zjk0.szp15.com" }
     file     = { host_record = "file", type = "CNAME", value = "zjk0.szp15.com" }
+    idm      = { host_record = "idm", type = "CNAME", value = "hz0.szp15.com" }
     "@"      = { host_record = "@", type = "CNAME", value = "zjk0.szp15.com" }
   }
 }

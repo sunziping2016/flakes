@@ -137,7 +137,8 @@
       "/etc/ssh/ssh_host_rsa_key.pub"
     ];
     directories = [
-      "/var/lib/bluetooth"
+      "/var/lib"
+      "/var/log"
     ];
     users.sun = {
       directories = [

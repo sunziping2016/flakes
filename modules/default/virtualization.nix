@@ -13,12 +13,6 @@ with lib;
     network.enable = mkEnableOption "Enable DNS on default bridge";
   };
   config = mkIf cfg.enable {
-    environment.persistence."/persist" = {
-      directories = [
-        "/var/lib/containers"
-      ];
-    };
-
     virtualisation = {
       podman = {
         enable = true;
