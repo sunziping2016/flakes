@@ -1,3 +1,6 @@
 /.terraform
 /terraform.tfstate*
 /.terraform.lock.hcl
+
+# except encrypted tfstate
+!terraform.tfstate.secrets.json

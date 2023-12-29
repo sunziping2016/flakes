@@ -77,25 +77,7 @@
             devShells.default = devenv.lib.mkShell {
               inherit inputs pkgs;
               modules = [
-                ({ pkgs, config, ... }:
-                  let
-                    my-opentofu = pkgs.opentofu.withPlugins (ps: with ps; [ sops alicloud ]);
-                  in
-                  {
-                    # This is your devenv configuration
-                    packages = with pkgs; [
-                      colmena
-                      my-opentofu
-                      sops
-                    ];
-                    pre-commit.hooks.nixpkgs-fmt.enable = true;
-                    pre-commit.hooks.my-opentofu-fmt = {
-                      enable = true;
-                      name = "opentofu-fmt";
-                      entry = "${my-opentofu}/bin/tofu fmt";
-                      files = "\\.tf$";
-                    };
-                  })
+                ./devenv.nix
               ];
             };
             packages.devenv-up = devShells.default.config.procfileScript;

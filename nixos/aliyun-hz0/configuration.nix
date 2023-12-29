@@ -10,7 +10,7 @@
   services.openssh.enable = true;
 
   sops = {
-    defaultSopsFile = ../secrets.enc.yaml;
+    defaultSopsFile = ../secrets.yaml;
     age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
     gnupg.sshKeyPaths = [ ];
     secrets = {

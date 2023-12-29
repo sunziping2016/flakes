@@ -1,6 +1,11 @@
+# direnv
 .direnv/
+
+# editor
 .vscode/
-secrets.yaml
+
+# sops
+.decrypted~*
 
 # devenv
 result

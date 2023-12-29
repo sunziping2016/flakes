@@ -90,7 +90,7 @@
   # services.xserver.libinput.enable = true;
 
   sops = {
-    defaultSopsFile = ../secrets.enc.yaml;
+    defaultSopsFile = ../secrets.yaml;
     # see Mic92/sops-nix#167 for setting up with impermanence
     age.sshKeyPaths = [ "/persist/etc/ssh/ssh_host_ed25519_key" ];
     gnupg.sshKeyPaths = [ ];

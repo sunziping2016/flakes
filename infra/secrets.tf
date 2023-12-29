@@ -1,5 +1,5 @@
 data "sops_file" "secrets" {
-  source_file = "secrets.enc.yaml"
+  source_file = "secrets.yaml"
 }
 
 locals {
