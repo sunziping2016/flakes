@@ -6,6 +6,7 @@
       # graphics application
       birdtray
       blueman
+      chromium
       firefox
       gimp-with-plugins
       evince
@@ -31,6 +32,9 @@
       xfce.xfce4-dict
       xfce.xfdashboard
       xorg.xkill
+      vlc
+      # CLI application
+      htop
       # xfce plugins
       xfce.xfce4-pulseaudio-plugin
       xfce.xfce4-systemload-plugin
