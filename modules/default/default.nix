@@ -4,5 +4,6 @@
     ./virtualization.nix
     ./network.nix
     ./sing-box.nix
+    ./idm.nix
   ];
 }

@@ -4,6 +4,7 @@ default:
 apply:
     tofu apply
     tofu output --json > data.json
+    @just encrypt
 
 encrypt:
     if ! sops --decrypt terraform.tfstate.secrets | diff -q - terraform.tfstate > /dev/null; then \
