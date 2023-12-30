@@ -124,7 +124,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim
+    # extra man pages
+    pkgs.man-pages
+    pkgs.man-pages-posix
   ];
   programs._1password-gui.enable = true;
 
