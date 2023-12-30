@@ -6,6 +6,8 @@ in
   # This is your devenv configuration
   packages = with pkgs; [
     colmena
+    fzf # for just
+    just
     my-opentofu
     sops
   ];
@@ -19,19 +21,31 @@ in
   pre-commit.hooks.pre-commit-hook-ensure-sops = {
     enable = true;
     entry = "${pkgs.pre-commit-hook-ensure-sops}/bin/pre-commit-hook-ensure-sops";
-    files = "secrets\\.(yaml|json)$";
+    files = "secrets\\.yaml$|secrets$";
   };
   pre-commit.hooks.terraform-tfstate-ensure-sops =
     let
       script = with pkgs; writeShellScript "terraform-tfstate-ensure-sops" ''
-        ${sops}/bin/sops --decrypt --output-type binary infra/terraform.tfstate.secrets.json | ${diffutils}/bin/diff -q - infra/terraform.tfstate
+        ${sops}/bin/sops --decrypt infra/terraform.tfstate.secrets | ${diffutils}/bin/diff -q - infra/terraform.tfstate
       '';
     in
     {
       enable = true;
-      description = "Terraform tfstate encryption checker.";
       entry = "${script}";
       pass_filenames = false;
       raw.always_run = true;
+    };
+  pre-commit.hooks.just-fmt =
+    let
+      script = with pkgs; writeShellScript "just-fmt" ''
+        for file in "$@"; do
+          ${pkgs.just}/bin/just --fmt --unstable -f "$file";
+        done
+      '';
+    in
+    {
+      enable = true;
+      entry = "${script}";
+      files = "justfile$";
     };
 }
