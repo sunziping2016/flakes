@@ -40,6 +40,11 @@ let
           geosite = "cn";
           server = "local";
         }
+        # Will be changed to compiled rule sets in sing-box v1.8.0
+        {
+          domain_suffix = "szp15.com";
+          server = "local";
+        }
         {
           query_type = [ "A" "AAAA" ];
           server = "remote";
@@ -51,7 +56,7 @@ let
         inet6_range = "fc00::/18";
       };
       independent_cache = true;
-      strategy = "ipv4_only";
+      strategy = "prefer_ipv4";
     };
     outbounds = [
       {
@@ -76,7 +81,7 @@ let
       }
       {
         type = "mixed";
-        listen = "::";
+        listen = "::1";
         listen_port = 12311;
       }
     ];
@@ -88,6 +93,9 @@ let
         }
         {
           geosite = "cn";
+          outbound = "direct";
+        }
+        {
           geoip = [ "private" "cn" ];
           outbound = "direct";
         }
