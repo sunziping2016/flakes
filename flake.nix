@@ -85,6 +85,9 @@
         )
     ) //
     {
+      hydraJobs = {
+        desktop = self.nixosConfigurations.desktop.config.system.build.toplevel;
+      };
       nixosModules = modules.nixosModules;
       homeManagerModules = modules.homeManagerModules;
       nixosConfigurations =

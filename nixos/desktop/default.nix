@@ -14,10 +14,6 @@ inputs.nixpkgs.lib.nixosSystem {
     }
     inputs.impermanence.nixosModules.impermanence
     inputs.sops-nix.nixosModules.sops
-    {
-      nix.settings.nix-path = [ "nixpkgs=${inputs.nixpkgs}" ];
-      nix.registry.p.flake = self;
-    }
   ];
   specialArgs = { inherit self inputs; };
 }

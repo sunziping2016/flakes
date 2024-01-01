@@ -22,6 +22,8 @@ module "aliyun_security_group_hz" {
     http_ipv6  = { port_range = "80/80", ipv6_cidr_ip = "::/0" }
     https_ipv4 = { port_range = "443/443", cidr_ip = "0.0.0.0/0" }
     https_ipv6 = { port_range = "443/443", ipv6_cidr_ip = "::/0" }
+    ldaps_ipv4 = { port_range = "636/636", cidr_ip = "0.0.0.0/0" }
+    ldaps_ipv6 = { port_range = "636/636", ipv6_cidr_ip = "::/0" }
   }
 }
 
@@ -70,6 +72,7 @@ module "aliyun_dns" {
     commento = { host_record = "commento", type = "CNAME", value = "zjk0.szp15.com" }
     file     = { host_record = "file", type = "CNAME", value = "zjk0.szp15.com" }
     idm      = { host_record = "idm", type = "CNAME", value = "hz0.szp15.com" }
+    hydra    = { host_record = "hydra", type = "CNAME", value = "hz0.szp15.com" }
     "@"      = { host_record = "@", type = "CNAME", value = "zjk0.szp15.com" }
   }
 }

@@ -2,6 +2,7 @@
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
     ./idm.nix
+    ./hydra.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -15,6 +16,18 @@
     gnupg.sshKeyPaths = [ ];
     secrets = {
       "sing-box-outbound.json" = { };
+      "hydra.ldap.token" = { };
+    };
+
+    templates = {
+      "hydra-ldap-password.conf" = {
+        content = ''
+          bindpw = "${config.sops.placeholder."hydra.ldap.token"}"
+        '';
+        mode = "0440";
+        owner = "hydra";
+        group = "hydra";
+      };
     };
   };
 

@@ -6,6 +6,9 @@ apply:
     tofu output --json > data.json
     @just encrypt
 
+fmt:
+    tofu fmt --recursive
+
 encrypt:
     if ! sops --decrypt terraform.tfstate.secrets | diff -q - terraform.tfstate > /dev/null; then \
         echo "Encrypting terraform.tfstate"; \

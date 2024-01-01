@@ -7,6 +7,7 @@ in
     enableServer = true;
     serverSettings = {
       bindaddress = "[::1]:24557";
+      ldapbindaddress = "[::]:636";
       domain = "idm.szp15.com";
       origin = "https://idm.szp15.com";
       tls_chain = "${sslCertDir}/fullchain.pem";
@@ -20,7 +21,7 @@ in
 
   users.users = {
     kanidm.extraGroups = [ "kanidm-acme" ];
-    caddy.extraGroups = [ "kanidm-acme" ];
+    nginx.extraGroups = [ "kanidm-acme" ];
   };
 
   security.acme = {
@@ -34,35 +35,29 @@ in
   security.acme.certs = {
     "idm.szp15.com" = {
       group = "kanidm-acme";
-      reloadServices = [ "kanidm.service" ];
     };
   };
 
-  services.caddy = {
+  services.nginx = {
     enable = true;
-    virtualHosts = {
-      "http://" = {
-        logFormat = ''
-          output file ${config.services.caddy.logDir}/access-acme.log
-        '';
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
+    recommendedGzipSettings = true;
+    recommendedBrotliSettings = true;
+    recommendedZstdSettings = true;
+
+    # Maybe we can use tcp forwarding based on SNI. See <https://stackoverflow.com/a/40135151>.
+    virtualHosts."idm.szp15.com" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/" = {
+        proxyPass = "https://[::1]:24557";
         extraConfig = ''
-          handle /.well-known/acme-challenge/* {
-            root * ${config.security.acme.defaults.webroot}
-            file_server
-          }
-        '';
-      };
-      "idm.szp15.com" = {
-        useACMEHost = "idm.szp15.com";
-        extraConfig = ''
-          reverse_proxy [::1]:24557 {
-            transport http {
-              tls_insecure_skip_verify
-            }
-          }
+          proxy_ssl_server_name on;
+          proxy_ssl_verify off;
         '';
       };
     };
-    email = config.security.acme.defaults.email;
   };
 }

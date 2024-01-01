@@ -158,13 +158,7 @@
     };
   };
 
-  nix.settings = {
-    trusted-users = [ "root" "sun" ];
-    auto-optimise-store = true;
-    flake-registry = "/etc/nix/registry.json";
-    experimental-features = [ "nix-command" "flakes" "auto-allocate-uids" "cgroups" ];
-    use-cgroups = true;
-  };
+  nix.settings.trusted-users = [ "root" "sun" ];
   nixpkgs.config.allowUnfree = true;
 
   # Some programs need SUID wrappers, can be configured further or are
