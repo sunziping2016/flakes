@@ -51,6 +51,8 @@
     directories = [
       "/var/lib"
       "/var/log"
+      # workaround for OOM caused by nix-build
+      "/tmp"
     ];
   };
 
