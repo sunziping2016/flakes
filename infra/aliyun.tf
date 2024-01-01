@@ -64,8 +64,7 @@ module "aliyun_dns" {
     hz0_A    = { host_record = "hz0", type = "A", value = module.aliyun_ipv4_hz.ip_addresses.hz0 }
     hz0_AAAA = { host_record = "hz0", type = "AAAA", value = module.aliyun_ipv6_hz.ipv6_addresses.hz0 }
 
-    zjk0_A    = { host_record = "zjk0", type = "A", value = "47.92.30.246" }
-    zjk0_AAAA = { host_record = "zjk0", type = "AAAA", value = "2408:4001:208:4900:a244:6016:2560:98b2" }
+    zjk0_A = { host_record = "zjk0", type = "A", value = "47.92.30.246" }
 
     firefly  = { host_record = "firefly", type = "CNAME", value = "zjk0.szp15.com" }
     god      = { host_record = "god", type = "CNAME", value = "zjk0.szp15.com" }
