@@ -3,6 +3,7 @@
     (modulesPath + "/profiles/qemu-guest.nix")
     ./idm.nix
     ./hydra.nix
+    ./firefly.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
@@ -53,6 +54,8 @@
       "/var/log"
       # workaround for OOM caused by nix-build
       "/tmp"
+      # service data
+      "/srv"
     ];
   };
 

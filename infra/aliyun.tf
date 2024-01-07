@@ -66,7 +66,7 @@ module "aliyun_dns" {
 
     zjk0_A = { host_record = "zjk0", type = "A", value = "47.92.30.246" }
 
-    firefly  = { host_record = "firefly", type = "CNAME", value = "zjk0.szp15.com" }
+    firefly  = { host_record = "firefly", type = "CNAME", value = "hz0.szp15.com" }
     god      = { host_record = "god", type = "CNAME", value = "zjk0.szp15.com" }
     commento = { host_record = "commento", type = "CNAME", value = "zjk0.szp15.com" }
     file     = { host_record = "file", type = "CNAME", value = "zjk0.szp15.com" }
