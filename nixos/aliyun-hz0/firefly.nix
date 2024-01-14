@@ -357,18 +357,18 @@ in
   sops.templates."firefly_app_env_file" = {
     content = ''
       APP_KEY="${config.sops.placeholder."firefly.app-key"}"
-      MAIL_HOST = "${config.sops.placeholder."firefly.mail-host"}"
-      MAIL_PORT = "${config.sops.placeholder."firefly.mail-port"}"
-      MAIL_FROM = "FireflyIII <${config.sops.placeholder."firefly.mail-username"}>"
-      MAIL_USERNAME = "${config.sops.placeholder."firefly.mail-username"}"
-      MAIL_PASSWORD = "${config.sops.placeholder."firefly.mail-password"}"
-      STATIC_CRON_TOKEN = "${config.sops.placeholder."firefly.static-cron-token"}"
+      MAIL_HOST="${config.sops.placeholder."firefly.mail-host"}"
+      MAIL_PORT="${config.sops.placeholder."firefly.mail-port"}"
+      MAIL_FROM="${config.sops.placeholder."firefly.mail-username"}"
+      MAIL_USERNAME="${config.sops.placeholder."firefly.mail-username"}"
+      MAIL_PASSWORD="${config.sops.placeholder."firefly.mail-password"}"
+      STATIC_CRON_TOKEN="${config.sops.placeholder."firefly.static-cron-token"}"
     '';
   };
 
   sops.templates."firefly_cron_env_file" = {
     content = ''
-      STATIC_CRON_TOKEN = "${config.sops.placeholder."firefly.static-cron-token"}"
+      STATIC_CRON_TOKEN="${config.sops.placeholder."firefly.static-cron-token"}"
     '';
   };
 
