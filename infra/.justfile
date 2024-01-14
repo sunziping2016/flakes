@@ -6,6 +6,10 @@ apply:
     tofu output --json > data.json
     @just encrypt
 
+init:
+    tofu init --upgrade
+    @just encrypt
+
 fmt:
     tofu fmt --recursive
 

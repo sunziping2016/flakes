@@ -33,7 +33,7 @@
   };
   outputs = { self, flake-utils, nixpkgs, devenv, ... }@inputs:
     let
-      lib = inputs.nixpkgs.lib;
+      lib = nixpkgs.lib;
       modules = import ./modules;
 
       data = lib.importJSON ./infra/data.json;
@@ -46,7 +46,13 @@
               "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBIO4wL3BzfaMDOpbT/U/99MVQERjtzH2YxA6KAs7lwM"
             ];
           };
-          nixpkgs = import inputs.nixpkgs { system = "x86_64-linux"; };
+          nixpkgs = import nixpkgs {
+            system = "x86_64-linux";
+            overlays = [
+              self.overlays.default
+              inputs.colmena.overlay
+            ];
+          };
         };
       } //
       (
@@ -64,13 +70,21 @@
           )
           data.nodes.value
       );
+
+      this = import ./pkgs;
     in
     (
       flake-utils.lib.eachSystem [ "x86_64-linux" "aarch64-linux" ]
         (
           system:
           let
-            pkgs = import nixpkgs { inherit system; };
+            pkgs = import nixpkgs {
+              inherit system;
+              overlays = [
+                self.overlays.default
+                inputs.colmena.overlay
+              ];
+            };
           in
           rec {
             legacyPackages = pkgs;
@@ -80,7 +94,9 @@
                 ./devenv.nix
               ];
             };
-            packages.devenv-up = devShells.default.config.procfileScript;
+            packages = {
+              devenv-up = devShells.default.config.procfileScript;
+            } // this.packages pkgs;
           }
         )
     ) //
@@ -90,6 +106,7 @@
       };
       nixosModules = modules.nixosModules;
       homeManagerModules = modules.homeManagerModules;
+      overlays.default = this.overlay;
       nixosConfigurations =
         {
           desktop = import ./nixos/desktop {

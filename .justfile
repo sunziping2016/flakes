@@ -14,3 +14,6 @@ keyscan HOST:
 
 idm-recover-account:
     ssh root@hz0.szp15.com kanidmd recover-account admin
+
+upgrade:
+    nix-update --flake terraform-providers.authentik

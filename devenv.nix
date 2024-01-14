@@ -1,6 +1,10 @@
 { pkgs, config, ... }:
 let
-  my-opentofu = pkgs.opentofu.withPlugins (ps: with ps; [ sops alicloud ]);
+  my-opentofu = pkgs.opentofu.withPlugins (ps: with ps; [
+    sops
+    alicloud
+    authentik
+  ]);
 in
 {
   # This is your devenv configuration
@@ -9,6 +13,7 @@ in
     fzf # for just
     just
     my-opentofu
+    nix-update
     sops
   ];
   pre-commit.hooks.nixpkgs-fmt.enable = true;
