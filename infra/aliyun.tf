@@ -72,6 +72,7 @@ module "aliyun_dns" {
     file     = { host_record = "file", type = "CNAME", value = "zjk0.szp15.com" }
     idm      = { host_record = "idm", type = "CNAME", value = "hz0.szp15.com" }
     hydra    = { host_record = "hydra", type = "CNAME", value = "hz0.szp15.com" }
+    auth     = { host_record = "auth", type = "CNAME", value = "hz0.szp15.com" }
     "@"      = { host_record = "@", type = "CNAME", value = "zjk0.szp15.com" }
   }
 }

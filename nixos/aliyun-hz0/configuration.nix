@@ -4,6 +4,7 @@
     ./idm.nix
     ./hydra.nix
     ./firefly.nix
+    ./authentik.nix
   ];
 
   boot.loader.systemd-boot.enable = true;
