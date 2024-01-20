@@ -36,7 +36,7 @@
       lib = nixpkgs.lib;
       modules = import ./modules;
 
-      data = lib.importJSON ./infra/data.json;
+      nodes = lib.importJSON ./infra/nodes.json;
       hive = {
         meta = {
           specialArgs = {
@@ -68,7 +68,7 @@
               imports = [ ./nixos/${name} ];
             }
           )
-          data.nodes.value
+          nodes
       );
 
       this = import ./pkgs;

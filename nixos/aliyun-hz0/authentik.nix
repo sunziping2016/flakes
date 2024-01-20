@@ -1,4 +1,7 @@
-{ config, ... }:
+{ config, pkgs, lib, ... }:
+let
+  host = "auth.szp15.com";
+in
 {
   sops.secrets = {
     "authentik.secret-key" = { };
@@ -122,7 +125,9 @@
           };
           service.volumes = [
             "/srv/authentik/media:/media"
-            "/srv/authentik/certs:/certs"
+            # Authentik discovers keys in /certs every hour.
+            # Wait for an hour to see if it works.
+            "\${CREDENTIALS_DIRECTORY:?credentials directory required}:/certs"
             "/srv/authentik/custom-templates:/templates"
           ];
           service.env_file = [
@@ -143,19 +148,37 @@
 
   systemd.tmpfiles.rules = [
     "d /srv/authentik/media 0755 authentik authentik -"
-    "d /srv/authentik/certs 0755 authentik authentik -"
     "d /srv/authentik/custom-templates 0755 authentik authentik -"
   ];
 
   systemd.services.arion-authentik = {
     wants = [ "network-online.target" ];
     after = [ "network-online.target" ];
+    serviceConfig = {
+      LoadCredential = [
+        "${host}.pem:${config.security.acme.certs.${host}.directory}/fullchain.pem"
+        "${host}.key:${config.security.acme.certs.${host}.directory}/key.pem"
+      ];
+      # Execute with root permissions.
+      ExecStart =
+        let
+          script = (pkgs.writeShellScriptBin "arion-authentik-start" ''
+            set -e
+            ${config.systemd.services.arion-authentik.script}
+          '').overrideAttrs (_: {
+            name = "unit-script-arion-authentik-start";
+          });
+        in
+        lib.mkForce "+${script}/bin/arion-authentik-start";
+      User = "authentik";
+      Group = "authentik";
+    };
   };
 
   services.nginx = {
     enable = true;
 
-    virtualHosts."auth.szp15.com" = {
+    virtualHosts."${host}" = {
       enableACME = true;
       forceSSL = true;
       locations."/" = {

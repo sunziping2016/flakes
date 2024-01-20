@@ -3,7 +3,7 @@ default:
 
 apply:
     tofu apply
-    tofu output --json > data.json
+    tofu output --json nodes > nodes.json
     @just encrypt
 
 init:
@@ -14,7 +14,7 @@ fmt:
     tofu fmt --recursive
 
 encrypt:
-    if ! sops --decrypt terraform.tfstate.secrets | diff -q - terraform.tfstate > /dev/null; then \
+    if [ ! -f terraform.tfstate.secrets ] || ! sops --decrypt terraform.tfstate.secrets | diff -q - terraform.tfstate > /dev/null; then \
         echo "Encrypting terraform.tfstate"; \
         sops --encrypt --output terraform.tfstate.secrets terraform.tfstate; \
     fi
