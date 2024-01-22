@@ -22,5 +22,13 @@ with lib;
       experimental-features = [ "nix-command" "flakes" "auto-allocate-uids" "cgroups" ];
       use-cgroups = true;
     };
+
+    security.acme = {
+      acceptTerms = true;
+      defaults = {
+        email = "me@szp.io";
+        webroot = "/var/lib/acme/acme-challenge";
+      };
+    };
   };
 }

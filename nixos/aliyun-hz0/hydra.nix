@@ -1,17 +1,4 @@
 { config, ... }: {
-  sops.secrets = {
-    "authentik.outposts.ldap.token" = { };
-  };
-
-  sops.templates."authentik_outpost_ldap_env_file" = {
-    content = ''
-      AUTHENTIK_HOST="https://auth.szp15.com"
-      AUTHENTIK_INSECURE="false"
-      AUTHENTIK_TOKEN="${config.sops.placeholder."authentik.outposts.ldap.token"}"
-    '';
-  };
-
-
   services.hydra = {
     enable = true;
     hydraURL = "https://hydra.szp15.com";
@@ -75,29 +62,6 @@
         timeout = 3600
       </git-input>
     '';
-  };
-
-  virtualisation.arion.projects.authentik_outpost_ldap.settings =
-    let
-      version = "2023.10.6";
-    in
-    {
-      services = {
-        authentik_ldap = {
-          service.image = "ghcr.io/goauthentik/ldap";
-          service.ports = [
-            "127.0.0.1:9248:6636"
-          ];
-          service.env_file = [
-            config.sops.templates."authentik_outpost_ldap_env_file".path
-          ];
-        };
-      };
-    };
-
-  systemd.services.arion-authentik_outpost_ldap = {
-    wants = [ "network-online.target" ];
-    after = [ "network-online.target" ];
   };
 
   services.nginx.virtualHosts."hydra.szp15.com" = {

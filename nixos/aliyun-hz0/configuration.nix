@@ -1,8 +1,8 @@
 { config, modulesPath, data, ... }: {
   imports = [
     (modulesPath + "/profiles/qemu-guest.nix")
-    ./idm.nix
-    ./hydra.nix
+    # ./idm.nix
+    # ./hydra.nix
     ./firefly.nix
     ./authentik.nix
   ];
@@ -18,19 +18,19 @@
     gnupg.sshKeyPaths = [ ];
     secrets = {
       "sing-box-outbound.json" = { };
-      "hydra.ldap.token" = { };
+      # "hydra.ldap.token" = { };
     };
 
-    templates = {
-      "hydra-ldap-password.conf" = {
-        content = ''
-          bindpw = "${config.sops.placeholder."hydra.ldap.token"}"
-        '';
-        mode = "0440";
-        owner = "hydra";
-        group = "hydra";
-      };
-    };
+    # templates = {
+    #   "hydra-ldap-password.conf" = {
+    #     content = ''
+    #       bindpw = "${config.sops.placeholder."hydra.ldap.token"}"
+    #     '';
+    #     mode = "0440";
+    #     owner = "hydra";
+    #     group = "hydra";
+    #   };
+    # };
   };
 
   users.users.root.openssh.authorizedKeys.keys = data.keys;
@@ -58,6 +58,16 @@
       # service data
       "/srv"
     ];
+  };
+
+  services.nginx = {
+    enable = true;
+    recommendedOptimisation = true;
+    recommendedProxySettings = true;
+    recommendedTlsSettings = true;
+    recommendedGzipSettings = true;
+    recommendedBrotliSettings = true;
+    recommendedZstdSettings = true;
   };
 
   system.stateVersion = "23.11";

@@ -442,15 +442,11 @@ in
     after = [ "network-online.target" ];
   };
 
-  services.nginx = {
-    enable = true;
-
-    virtualHosts."firefly.szp15.com" = {
-      enableACME = true;
-      forceSSL = true;
-      locations."/" = {
-        proxyPass = "http://127.0.0.1:18098";
-      };
+  services.nginx.virtualHosts."firefly.szp15.com" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/" = {
+      proxyPass = "http://127.0.0.1:18098";
     };
   };
 }
