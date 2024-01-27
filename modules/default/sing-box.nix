@@ -3,9 +3,10 @@ let
   cfg = config.environment.sing-box;
   settings = {
     log.level = "info";
-    experimental.clash_api = {
+    experimental.cache_file = {
+      enabled = true;
+      path = "/var/cache/sing-box/cache.db";
       store_fakeip = true;
-      cache_file = "/var/cache/sing-box/cache.db";
     };
     dns = {
       servers = [
@@ -28,7 +29,7 @@ let
       ];
       rules = [
         {
-          geosite = "category-ads-all";
+          rule_set = "geosite-category-ads-all";
           server = "block";
           disable_cache = true;
         }
@@ -37,7 +38,7 @@ let
           server = "local";
         }
         {
-          geosite = "cn";
+          rule_set = "geosite-geolocation-cn";
           server = "local";
         }
         # Will be changed to compiled rule sets in sing-box v1.8.0
@@ -92,20 +93,41 @@ let
           outbound = "dns-out";
         }
         {
-          geosite = "cn";
+          ip_is_private = true;
           outbound = "direct";
         }
         {
-          geoip = [ "private" "cn" ];
+          rule_set = [
+            "geoip-cn"
+            "geosite-geolocation-cn"
+          ];
           outbound = "direct";
         }
         {
-          geosite = "category-ads-all";
+          rule_set = "geosite-category-ads-all";
           outbound = "block";
         }
       ];
-      geosite.path = "${pkgs.sing-geosite}/share/sing-box/geosite.db";
-      geoip.path = "${pkgs.sing-geoip}/share/sing-box/geoip.db";
+      rule_set = [
+        {
+          tag = "geoip-cn";
+          type = "remote";
+          format = "binary";
+          url = "https://raw.githubusercontent.com/SagerNet/sing-geoip/rule-set/geoip-cn.srs";
+        }
+        {
+          tag = "geosite-geolocation-cn";
+          type = "remote";
+          format = "binary";
+          url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-geolocation-cn.srs";
+        }
+        {
+          tag = "geosite-category-ads-all";
+          type = "remote";
+          format = "binary";
+          url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-category-ads-all.srs";
+        }
+      ];
       auto_detect_interface = true;
     };
   };
