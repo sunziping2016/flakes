@@ -25,8 +25,7 @@ in
   };
   pre-commit.hooks.pre-commit-hook-ensure-sops = {
     enable = true;
-    entry = "${pkgs.pre-commit-hook-ensure-sops}/bin/pre-commit-hook-ensure-sops";
-    files = "secrets\\.yaml$|secrets$";
+    files = "secrets$";
   };
   pre-commit.hooks.just-fmt =
     let
