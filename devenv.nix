@@ -28,18 +28,6 @@ in
     entry = "${pkgs.pre-commit-hook-ensure-sops}/bin/pre-commit-hook-ensure-sops";
     files = "secrets\\.yaml$|secrets$";
   };
-  pre-commit.hooks.terraform-tfstate-ensure-sops =
-    let
-      script = with pkgs; writeShellScript "terraform-tfstate-ensure-sops" ''
-        ${sops}/bin/sops --decrypt infra/terraform.tfstate.secrets | ${diffutils}/bin/diff -q - infra/terraform.tfstate
-      '';
-    in
-    {
-      enable = true;
-      entry = "${script}";
-      pass_filenames = false;
-      raw.always_run = true;
-    };
   pre-commit.hooks.just-fmt =
     let
       script = with pkgs; writeShellScript "just-fmt" ''
