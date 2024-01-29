@@ -38,12 +38,17 @@ let
           server = "local";
         }
         {
-          rule_set = "geosite-geolocation-cn";
+          rule_set = [
+            "geosite-geolocation-cn"
+            "geosite-steam"
+          ];
           server = "local";
         }
         # Will be changed to compiled rule sets in sing-box v1.8.0
         {
-          domain_suffix = "szp15.com";
+          domain_suffix = [
+            "szp15.com"
+          ];
           server = "local";
         }
         {
@@ -120,6 +125,13 @@ let
           type = "remote";
           format = "binary";
           url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-geolocation-cn.srs";
+        }
+        {
+          tag = "geosite-steam";
+          type = "remote";
+          format = "binary";
+          url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-steam.srs";
+
         }
         {
           tag = "geosite-category-ads-all";
