@@ -1,6 +1,14 @@
-/.terraform
-/terraform.tfstate*
-/.terraform.lock.hcl
+# Local .terraform directories
+**/.terraform/
 
-# except encrypted tfstate
-!terraform.tfstate.secrets
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Dependency lock files
+# Can be gitignored because they are already locked by this flake.
+.terraform.lock.hcl

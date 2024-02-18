@@ -3,9 +3,16 @@ keys:
   - &host_desktop age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq
   - &host_aliyun_hz0 age1ltxsax5lq9atv8dw26kzhupf6v4ydenu47n9ufvr6mprevp3m3kqrzr926
 creation_rules:
+  # TODO: add a backup key
+  # Environment variables secrets
+  - path_regex: tf\.secrets\.yaml$
+    key_groups:
+      - pgp:
+          - *user_sun
+  # Fallback
   - key_groups:
-    - pgp:
-        - *user_sun
-      age:
-        - *host_desktop
-        - *host_aliyun_hz0
+      - pgp:
+          - *user_sun
+        age:
+          - *host_desktop
+          - *host_aliyun_hz0

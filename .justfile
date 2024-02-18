@@ -17,4 +17,5 @@ idm-recover-account:
 
 upgrade:
     nix-update --flake terraform-providers.authentik
+    nix-update --flake terraform-providers.ldap
     nix-update --flake ossfs

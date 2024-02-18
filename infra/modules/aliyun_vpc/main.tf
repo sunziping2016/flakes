@@ -7,7 +7,7 @@ terraform {
 }
 
 resource "alicloud_vpc" "this" {
-  cidr_block  = "172.16.0.0/12"
+  cidr_block  = var.cidr_block
   enable_ipv6 = true
 }
 

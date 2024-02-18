@@ -1,23 +1,22 @@
+set positional-arguments := true
+
 default:
     @just --choose
-
-apply:
-    tofu apply
-    tofu output --json nodes > nodes.json
-    @just encrypt
-
-init:
-    tofu init --upgrade
-    @just encrypt
 
 fmt:
     tofu fmt --recursive
 
-encrypt:
-    if [ ! -f terraform.tfstate.secrets ] || ! sops --decrypt terraform.tfstate.secrets | diff -q - terraform.tfstate > /dev/null; then \
-        echo "Encrypting terraform.tfstate"; \
-        sops --encrypt --output terraform.tfstate.secrets terraform.tfstate; \
-    fi
+[no-cd]
+[no-exit-message]
+@tofu *args:
+    @# (sensitive dotenv) tofu {{ args }}
+    env $(sops --output-type dotenv --decrypt "{{ justfile_directory() }}/dotenv.tf.secrets.yaml" | xargs) tofu "$@"
 
-decrypt:
-    sops --decrypt --output terraform.tfstate terraform.tfstate.secrets
+init +args="01.aliyun":
+    @just tofu "-chdir=roots/$1" init "${@:2}"
+
+apply +args="01.aliyun":
+    @just tofu "-chdir=roots/$1" apply "${@:2}"
+
+plan +args="01.aliyun":
+    @just tofu "-chdir=roots/$1" plan "${@:2}"

@@ -4,6 +4,7 @@ let
     sops
     alicloud
     authentik
+    ldap
   ]);
 in
 {
@@ -15,6 +16,7 @@ in
     my-opentofu
     nix-update
     sops
+    jq
   ];
   pre-commit.hooks.nixpkgs-fmt.enable = true;
   pre-commit.hooks.my-opentofu-fmt = {
@@ -25,7 +27,7 @@ in
   };
   pre-commit.hooks.pre-commit-hook-ensure-sops = {
     enable = true;
-    files = "secrets$";
+    files = "secrets\\.(yaml|json)$";
   };
   pre-commit.hooks.just-fmt =
     let

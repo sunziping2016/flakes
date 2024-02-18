@@ -8,6 +8,7 @@
     ./hardware.nix
     ./nvidia.nix
     ./xfce.nix
+    ./ldap.nix
   ];
 
   # Use the systemd-boot EFI boot loader.

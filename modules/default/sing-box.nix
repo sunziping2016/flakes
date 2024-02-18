@@ -48,6 +48,7 @@ let
         {
           domain_suffix = [
             "szp15.com"
+            "aliyuncs.com"
           ];
           server = "local";
         }
