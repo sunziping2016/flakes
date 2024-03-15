@@ -3,7 +3,7 @@
 This directory contains the Terraform code for our basic infrastructure.
 It is structured like this:
 - `/modules/`: reuseable modules. See [Standard Module Layout](https://developer.hashicorp.com/terraform/language/modules/develop/structure) for the structure of each module.
-- `/roots/`: root modules. Module names should be prefixed with digits to order them by their dependencies.
+- `/roots/`: root modules.
 - `/files/`: static files referred from modules. Templates should use the file extension `.tftpl`.
 
 

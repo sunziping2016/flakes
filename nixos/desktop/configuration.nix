@@ -11,6 +11,8 @@
     ./ldap.nix
   ];
 
+  # For cross compile
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

@@ -1,0 +1,52 @@
+#!/usr/bin/env nu
+use std assert
+
+$env.ROOT = ($"($env.FILE_PWD)/.." | path expand)
+$env.FLAKE = $"git+file://($env.ROOT)"
+let nodes = open $"($env.ROOT)/infra/generated/nodes.json"
+
+def main [
+    ...hostnames: string # The hostnames to reinstall
+    --no-confirm # Skip confirmation
+] {
+    if ($hostnames | is-empty) {
+        print -e "Nothing to do."
+        exit 1
+    }
+
+    let plan = $hostnames | each {|hostname|
+        let node = $nodes | where hostname == $hostname | first
+
+        let user = $node.ssh?.user? | default root
+        let host = $node.ssh?.host? | default nixos
+        let port = $node.ssh?.port? | default 22
+        let ssh = $"ssh://($user)@($host):($port)"
+
+
+        {hostname: $hostname, ssh: $ssh, config: $node.init_config, arch: $node.arch}
+    }
+
+    # Build images
+    let images =  $plan | select arch | uniq | insert image {|row|
+        let arch = $row.arch
+        let kexec_installer = (
+            nix build $"($env.FLAKE)#packages.($arch)-linux.kexec-installer-nixos-unstable-noninteractive"
+                --print-out-paths --no-link
+        )
+        let image = $"($kexec_installer)/nixos-kexec-installer-noninteractive-($arch)-linux.tar.gz"
+        assert ($image | path exists)
+        $image
+    }
+    let plan = $plan | join -l $images arch | reject arch
+
+    # Confirm
+    print -n $plan
+    if not $no_confirm { assert ((input -n 1 $"Continue? [y/N] " | str downcase) == "y") }
+
+    # Execute
+    $plan | par-each {|row|
+        (nixos-anywhere --flake $'($env.FLAKE)#($row.config)' $row.ssh
+            --kexec $row.image --no-substitute-on-destination)
+        {hostname: $row.hostname, exit_code: $env.LAST_EXIT_CODE}
+    }
+}

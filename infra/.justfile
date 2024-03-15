@@ -1,6 +1,6 @@
 set positional-arguments := true
 
-root := "01.aliyun"
+root := "aliyun"
 
 default:
     @just --choose

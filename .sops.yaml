@@ -1,7 +1,8 @@
 keys:
   - &user_sun 8CC5C91F72DB57DA20BD848C6523836CF4992251
   - &host_desktop age1v6lnkm7prm0dpmcdpvn44v50rpfkzsed5uv3znxt4grsd5y6sv5qjru9qq
-  - &host_aliyun_hz0 age1ltxsax5lq9atv8dw26kzhupf6v4ydenu47n9ufvr6mprevp3m3kqrzr926
+  - &host_aliyun_hz0 age1vqa7g2vvt28jnxlaqp96qshc4v2recm27gq4sd7t35kcfzjmzcmseppr6e
+  - &host_aliyun_hz1 age169cnhm3cszg5mxs35w8v4a28rzrfajyhjemyxsfm9h3syuker39qt03t2c
 creation_rules:
   # TODO: add a backup key
   # Environment variables secrets
@@ -16,3 +17,4 @@ creation_rules:
         age:
           - *host_desktop
           - *host_aliyun_hz0
+          - *host_aliyun_hz1

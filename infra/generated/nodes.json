@@ -1,0 +1,1 @@
+[{"arch":"x86_64","hostname":"aliyun-hz0","init_config":"aliyun-common","ssh":{"host":"hz0.szp15.com"}},{"arch":"x86_64","hostname":"aliyun-hz1","init_config":"aliyun-common","ssh":{"host":"hz1.szp15.com"}}]

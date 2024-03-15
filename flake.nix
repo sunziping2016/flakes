@@ -30,13 +30,21 @@
       url = "github:cachix/devenv";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-images = {
+      url = "github:nix-community/nixos-images";
+      inputs.nixos-unstable.follows = "nixpkgs";
+    };
+    nixos-anywhere = {
+      url = "github:nix-community/nixos-anywhere";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
   outputs = { self, flake-utils, nixpkgs, devenv, ... }@inputs:
     let
       lib = nixpkgs.lib;
       modules = import ./modules;
 
-      nodes = lib.importJSON ./infra/nodes.json;
+      nodes = lib.importJSON ./infra/generated/nodes.json;
       hive = {
         meta = {
           specialArgs = {
@@ -54,21 +62,25 @@
             ];
           };
         };
+        # for nixos-anywhere
+        aliyun-common = {
+          imports = [ ./nixos/aliyun-common ];
+        };
       } //
       (
-        # nix run github:numtide/nixos-anywhere -- --flake .#aliyun-hz0 root@hz0.szp15.com \
-        #     --kexec path/to/nixos-kexec-installer-noninteractive-x86_64-linux.tar.gz --no-substitute-on-destination
-        lib.mapAttrs
-          (
-            name: node: {
+        lib.listToAttrs (lib.lists.map
+          (node: lib.nameValuePair node.hostname
+            {
               deployment = {
-                targetHost = "${node.fqdn}";
-                tags = node.tags;
+                targetHost = node.ssh.host or null;
+                targetUser = node.ssh.user or "root";
+                targetPort = node.ssh.port or null;
               };
-              imports = [ ./nixos/${name} ];
+
+              imports = [ ./nixos/${node.config or node.hostname} ];
             }
           )
-          nodes
+          nodes)
       );
 
       this = import ./pkgs;
@@ -96,6 +108,8 @@
             };
             packages = {
               devenv-up = devShells.default.config.procfileScript;
+              kexec-installer-nixos-unstable-noninteractive = inputs.nixos-images.packages.${system}.kexec-installer-nixos-unstable-noninteractive;
+              nixos-anywhere = inputs.nixos-anywhere.packages.${system}.nixos-anywhere;
             } // this.packages pkgs;
           }
         )

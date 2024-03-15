@@ -23,13 +23,3 @@ module "ipv6_hz" {
     hz1 = alicloud_instance.hz1.id
   }
 }
-
-locals {
-  test = toset([{
-    a = 1
-    b = 2
-    }, {
-    b = 3
-    c = 4
-  }])
-}

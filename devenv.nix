@@ -5,9 +5,13 @@ let
     alicloud
     authentik
     ldap
+    local
   ]);
 in
 {
+  enterShell = ''
+    export PATH=$PATH:$PWD/scripts
+  '';
   # This is your devenv configuration
   packages = with pkgs; [
     colmena
@@ -16,7 +20,13 @@ in
     my-opentofu
     nix-update
     sops
-    jq
+    nvfetcher
+    nushell
+    delta
+    # for keyscan
+    ssh-to-age
+    # for reinstall
+    nixos-anywhere
   ];
   pre-commit.hooks.nixpkgs-fmt.enable = true;
   pre-commit.hooks.my-opentofu-fmt = {

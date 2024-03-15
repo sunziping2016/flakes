@@ -3,6 +3,9 @@ terraform {
     alicloud = {
       source = "registry.terraform.io/aliyun/alicloud"
     }
+    local = {
+      source = "registry.terraform.io/hashicorp/local"
+    }
   }
 }
 

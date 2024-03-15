@@ -1,0 +1,19 @@
+#!/usr/bin/env nu
+$env.ROOT = ($"($env.FILE_PWD)/.." | path expand)
+let nodes = open $"($env.ROOT)/infra/generated/nodes.json"
+
+def main [
+    ...hostnames: string # The hostnames for ssh-keyscan
+] {
+    let hostnames = if ($hostnames | is-empty) { $nodes.hostname } else { $hostnames }
+
+    $hostnames | par-each {|hostname|
+        let node = $nodes | where hostname == $hostname | first
+        let host = $node.ssh?.host? | default nixos
+        let port = $node.ssh?.port? | default 22
+
+        let age_key = (do { ssh-keyscan -t ed25519 -T 30 -p $port $host } | complete).stdout | ssh-to-age
+
+        {hostname: $hostname, ssh: $"($host):($port)", age_key: $age_key}
+    } | if (is-terminal -o) { table } else { to json -r }
+}

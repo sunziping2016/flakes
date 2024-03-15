@@ -43,8 +43,21 @@ resource "alicloud_instance" "hz1" {
 locals {
   nodes = [
     {
-      hostname = "hz0"
-      ssh      = "root@ipv6.hz0.szp15.com"
+      hostname    = "aliyun-hz0"
+      ssh         = { host = "hz0.szp15.com" }
+      arch        = "x86_64"
+      init_config = "aliyun-common"
+    },
+    {
+      hostname    = "aliyun-hz1"
+      ssh         = { host = "hz1.szp15.com" }
+      arch        = "x86_64"
+      init_config = "aliyun-common"
     }
   ]
+}
+
+resource "local_file" "nodes" {
+  content  = jsonencode(local.nodes)
+  filename = "../../generated/nodes.json"
 }
