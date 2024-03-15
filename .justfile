@@ -19,3 +19,7 @@ upgrade:
     nix-update --flake terraform-providers.authentik
     nix-update --flake terraform-providers.ldap
     nix-update --flake ossfs
+
+reinstall-remote:
+    nix run github:numtide/nixos-anywhere -- --flake .#aliyun-hz0 root@hz0.szp15.com \
+        --kexec "$(nix build p#nixos-kexec-installer-noninteractive --print-out-paths --no-link)" --no-substitute-on-destination

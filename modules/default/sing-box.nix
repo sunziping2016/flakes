@@ -110,6 +110,12 @@ let
           outbound = "direct";
         }
         {
+          rule_set = [
+            "geosite-openai"
+          ];
+          outbound = "us";
+        }
+        {
           rule_set = "geosite-category-ads-all";
           outbound = "block";
         }
@@ -132,7 +138,12 @@ let
           type = "remote";
           format = "binary";
           url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-steam.srs";
-
+        }
+        {
+          tag = "geosite-openai";
+          type = "remote";
+          format = "binary";
+          url = "https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-openai.srs";
         }
         {
           tag = "geosite-category-ads-all";
@@ -191,7 +202,7 @@ with lib;
       preStart = ''
         umask 0077
         mkdir -p /etc/sing-box
-        ${pkgs.jq}/bin/jq -s '.[1] as $outbound | .[0] | (.outbounds |= [$outbound] + .)' \
+        ${pkgs.jq}/bin/jq -s '.[1] as $outbound | .[0] | (.outbounds |= $outbound + .)' \
           - "$CREDENTIALS_DIRECTORY/outbound.json" > "$CACHE_DIRECTORY/config.json" << EOF
         ${builtins.toJSON settings}
         EOF

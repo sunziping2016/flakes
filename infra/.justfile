@@ -1,5 +1,7 @@
 set positional-arguments := true
 
+root := "01.aliyun"
+
 default:
     @just --choose
 
@@ -8,15 +10,22 @@ fmt:
 
 [no-cd]
 [no-exit-message]
-@tofu *args:
+@_tofu *args:
     @# (sensitive dotenv) tofu {{ args }}
-    env $(sops --output-type dotenv --decrypt "{{ justfile_directory() }}/dotenv.tf.secrets.yaml" | xargs) tofu "$@"
+    env $(sops --decrypt "{{ justfile_directory() }}/tf.secrets.env" | xargs) tofu "$@"
 
-init +args="01.aliyun":
-    @just tofu "-chdir=roots/$1" init "${@:2}"
+[no-exit-message]
+init *args:
+    @just _tofu "-chdir=roots/{{ root }}" init "$@"
 
-apply +args="01.aliyun":
-    @just tofu "-chdir=roots/$1" apply "${@:2}"
+[no-exit-message]
+apply *args:
+    @just _tofu "-chdir=roots/{{ root }}" apply "$@"
 
-plan +args="01.aliyun":
-    @just tofu "-chdir=roots/$1" plan "${@:2}"
+[no-exit-message]
+plan *args:
+    @just _tofu "-chdir=roots/{{ root }}" plan "$@"
+
+[no-exit-message]
+tofu *args:
+    @just _tofu "-chdir=roots/{{ root }}" "$@"

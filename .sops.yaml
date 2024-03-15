@@ -5,7 +5,7 @@ keys:
 creation_rules:
   # TODO: add a backup key
   # Environment variables secrets
-  - path_regex: tf\.secrets\.yaml$
+  - path_regex: tf\.secrets\.(yaml|json|env)$
     key_groups:
       - pgp:
           - *user_sun

@@ -27,6 +27,7 @@ in
   };
   pre-commit.hooks.pre-commit-hook-ensure-sops = {
     enable = true;
+    # FIXME: doesn't support env file
     files = "secrets\\.(yaml|json)$";
   };
   pre-commit.hooks.just-fmt =
