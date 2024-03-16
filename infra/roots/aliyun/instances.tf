@@ -43,16 +43,14 @@ resource "alicloud_instance" "hz1" {
 locals {
   nodes = [
     {
-      hostname    = "aliyun-hz0"
-      ssh         = { host = "hz0.szp15.com" }
-      arch        = "x86_64"
-      init_config = "aliyun-common"
+      hostname = "aliyun-hz0"
+      ssh      = { host = "hz0.szp15.com" }
+      arch     = "x86_64"
     },
     {
-      hostname    = "aliyun-hz1"
-      ssh         = { host = "hz1.szp15.com" }
-      arch        = "x86_64"
-      init_config = "aliyun-common"
+      hostname = "aliyun-hz1"
+      ssh      = { host = "hz1.szp15.com" }
+      arch     = "x86_64"
     }
   ]
 }

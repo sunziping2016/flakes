@@ -23,7 +23,7 @@ def main [
         let ssh = $"ssh://($user)@($host):($port)"
 
 
-        {hostname: $hostname, ssh: $ssh, config: $node.init_config, arch: $node.arch}
+        {hostname: $hostname, ssh: $ssh, config: ($node.config? | default $hostname), arch: $node.arch}
     }
 
     # Build images

@@ -62,10 +62,6 @@
             ];
           };
         };
-        # for nixos-anywhere
-        aliyun-common = {
-          imports = [ ./nixos/aliyun-common ];
-        };
       } //
       (
         lib.listToAttrs (lib.lists.map
@@ -78,6 +74,7 @@
               };
 
               imports = [ ./nixos/${node.config or node.hostname} ];
+              nixpkgs.system = "${node.arch}-linux";
             }
           )
           nodes)
