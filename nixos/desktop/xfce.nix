@@ -40,6 +40,8 @@
       xfce.xfce4-systemload-plugin
       xfce.xfce4-weather-plugin
       xfce.xfce4-whiskermenu-plugin
+      # games
+      prismlauncher
     ];
   };
 }

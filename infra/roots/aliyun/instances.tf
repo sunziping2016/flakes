@@ -9,8 +9,8 @@ module "security_group_hz" {
     http_ipv6  = { port_range = "80/80", ipv6_cidr_ip = "::/0" }
     https_ipv4 = { port_range = "443/443", cidr_ip = "0.0.0.0/0" }
     https_ipv6 = { port_range = "443/443", ipv6_cidr_ip = "::/0" }
-    ldaps_ipv4 = { port_range = "636/636", cidr_ip = "0.0.0.0/0" }
-    ldaps_ipv6 = { port_range = "636/636", ipv6_cidr_ip = "::/0" }
+    mc_ipv4    = { port_range = "25565/25565", cidr_ip = "0.0.0.0/0" }
+    mc_ipv6    = { port_range = "25565/25565", ipv6_cidr_ip = "::/0" }
   }
 }
 

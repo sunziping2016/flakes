@@ -38,6 +38,11 @@
       url = "github:nix-community/nixos-anywhere";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nix-minecraft = {
+      url = "github:Infinidoge/nix-minecraft";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.flake-utils.follows = "flake-utils";
+    };
   };
   outputs = { self, flake-utils, nixpkgs, devenv, ... }@inputs:
     let
@@ -59,6 +64,7 @@
             overlays = [
               self.overlays.default
               inputs.colmena.overlay
+              inputs.nix-minecraft.overlay
             ];
           };
         };
@@ -92,6 +98,7 @@
               overlays = [
                 self.overlays.default
                 inputs.colmena.overlay
+                inputs.nix-minecraft.overlay
               ];
             };
           in

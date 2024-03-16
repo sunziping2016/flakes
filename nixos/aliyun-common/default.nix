@@ -1,7 +1,7 @@
 { self, inputs, ... }:
 {
   imports = [
-    ../aliyun-common/disko.nix
+    ./disko.nix
     ./configuration.nix
     self.nixosModules.ng
     inputs.impermanence.nixosModules.impermanence

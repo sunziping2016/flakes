@@ -17,10 +17,8 @@ module "szp15" {
     god      = { host_record = "god", type = "CNAME", value = "zjk0.szp15.com" }
     commento = { host_record = "commento", type = "CNAME", value = "zjk0.szp15.com" }
     file     = { host_record = "file", type = "CNAME", value = "zjk0.szp15.com" }
-    idm      = { host_record = "idm", type = "CNAME", value = "hz0.szp15.com" }
-    hydra    = { host_record = "hydra", type = "CNAME", value = "hz0.szp15.com" }
-    auth     = { host_record = "auth", type = "CNAME", value = "hz0.szp15.com" }
-    ocis     = { host_record = "ocis", type = "CNAME", value = "hz0.szp15.com" }
     "@"      = { host_record = "@", type = "CNAME", value = "zjk0.szp15.com" }
+
+    mc = { host_record = "mc", type = "CNAME", value = "hz0.szp15.com" }
   }
 }

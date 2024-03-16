@@ -8,11 +8,14 @@
       ./nix/registry.nix
       # use systemd for network
       ./networking/systemd.nix
-      # proxy
-      ./networking/sing-box.nix
+      # uid & gid
+      ./misc/ids.nix
+      # services
+      ./services/sing-box.nix
+      ./services/minecraft.nix
     ];
 
-    networking.sing-box.enable = true;
+    my-services.sing-box.enable = true;
   };
   homeManagerModules.nvim = import ./nvim;
 }

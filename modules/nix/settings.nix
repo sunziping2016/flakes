@@ -4,4 +4,6 @@
     experimental-features = [ "nix-command" "flakes" "auto-allocate-uids" "cgroups" ];
     use-cgroups = true;
   };
+
+  nixpkgs.config.allowUnfree = true;
 }

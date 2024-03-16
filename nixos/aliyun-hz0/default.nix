@@ -8,4 +8,6 @@
     # inputs.impermanence.nixosModules.impermanence
     # inputs.sops-nix.nixosModules.sops
   ];
+
+  my-services.minecraft-server.enable = true;
 }

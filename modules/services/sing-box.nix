@@ -1,10 +1,10 @@
 { lib, pkgs, config, ... }:
 with lib;
 let
-  cfg = config.networking.sing-box;
+  cfg = config.my-services.sing-box;
 in
 {
-  options.networking.sing-box = {
+  options.my-services.sing-box = {
     enable = mkEnableOption "Enable sing-box TUN proxy";
     package = mkPackageOption pkgs "sing-box" { };
   };
