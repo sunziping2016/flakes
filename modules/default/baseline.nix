@@ -1,13 +1,7 @@
-{ lib, config, self, inputs, ... }:
-let
-  cfg = config.environment.baseline;
-in
+{ lib, self, inputs, ... }:
 with lib;
 {
-  options.environment.baseline = {
-    enable = mkEnableOption "baseline configurations";
-  };
-  config = lib.mkIf cfg.enable {
+  config = {
     boot = {
       kernel.sysctl = {
         "net.core.default_qdisc" = "fq";
@@ -23,6 +17,7 @@ with lib;
       use-cgroups = true;
     };
 
+    # Only take effect when security.acme.enable is true
     security.acme = {
       acceptTerms = true;
       defaults = {

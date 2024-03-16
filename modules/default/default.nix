@@ -2,7 +2,7 @@
   imports = [
     ./baseline.nix
     ./virtualization.nix
-    ./network.nix
+    ../networking/systemd.nix
     ./sing-box.nix
     # ./idm.nix
   ];

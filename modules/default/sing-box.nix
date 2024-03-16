@@ -171,17 +171,15 @@ with lib;
           RequiredForOnline = "no";
         };
         networkConfig = {
-          Address = "172.19.0.1/30";
+          Address = [
+            "172.19.0.1/30"
+            "198.18.0.0/15"
+          ];
           DNS = "172.19.0.2";
           DNSDefaultRoute = "no";
           ConfigureWithoutCarrier = "yes";
           Domains = "~.";
         };
-        routes = [{
-          routeConfig = {
-            Destination = "198.18.0.0/15";
-          };
-        }];
       };
     };
 

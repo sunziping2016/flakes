@@ -80,7 +80,6 @@
     pulse.enable = true;
   };
 
-  environment.baseline.enable = true;
   environment.virtualization = {
     enable = true;
     network.enable = true;
