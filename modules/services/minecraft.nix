@@ -77,5 +77,13 @@ in
         "dynmap/configuration.txt" = "${root}/dynmap/configuration.txt";
       };
     };
+
+    # dynmap
+    services.nginx.enable = true;
+    services.nginx.virtualHosts."map.szp15.com" = {
+      enableACME = true;
+      forceSSL = true;
+      locations."/".proxyPass = "http://127.0.0.1:25567";
+    };
   };
 }

@@ -8,11 +8,13 @@
       ./nix/registry.nix
       # use systemd for network
       ./networking/systemd.nix
+      #### config ####
       # uid & gid
       ./misc/ids.nix
-      # services
+      #### services ####
       ./services/sing-box.nix
       ./services/minecraft.nix
+      ./services/nginx.nix
     ];
 
     my-services.sing-box.enable = true;
