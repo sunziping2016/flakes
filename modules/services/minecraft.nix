@@ -1,9 +1,33 @@
 { inputs, lib, config, pkgs, ... }:
 with lib;
 let
+  fetchLocalPackwizModpack =
+    { root
+    , ...
+    }@args:
+    (pkgs.fetchPackwizModpack ({ url = ""; } // args)).overrideAttrs (old: {
+      buildInputs = with pkgs; [ jre_headless jq moreutils ];
+      buildPhase = ''
+        java -jar "$packwizInstallerBootstrap" \
+          --bootstrap-main-jar "$packwizInstaller" \
+          --bootstrap-no-update \
+          --no-gui \
+          --side "server" \
+          "${root}/pack.toml"
+      '';
+      passthru = old.passthru // {
+        manifest = lib.importTOML "${root}/pack.toml";
+      };
+    });
+
   cfg = config.my-services.minecraft-server;
+  modpack = fetchLocalPackwizModpack rec {
+    root = ./minecraft;
+    packHash = "sha256-HkHtz6TWIM1k8TfOrJKrn0lSSNg4KasXJjc9HSdS5+A=";
+  };
   mcVersion = modpack.manifest.versions.minecraft;
   fabricVersion = modpack.manifest.versions.fabric;
+  serverVersion = lib.replaceStrings [ "." ] [ "_" ] "fabric-${mcVersion}";
 in
 {
   imports = [ inputs.nix-minecraft.nixosModules.minecraft-servers ];
@@ -34,7 +58,7 @@ in
 
     services.minecraft-servers.servers.default = {
       enable = true;
-      package = pkgs.fabricServers.fabric-1_20_4;
+      package = pkgs.fabricServers.${serverVersion}.override { loaderVersion = fabricVersion; };
       serverProperties = {
         difficulty = "hard";
         gamemode = "survival";
@@ -45,6 +69,10 @@ in
         "aaaaaaaqie" = "fc50c689-79e1-46d1-87b0-63b7234eacb7";
         "sunziping2016" = "78b7406b-834b-42a7-948a-0a8087b6932e";
         "Forev3rNAlway5" = "cc64d967-bf1f-43a8-bbee-2eaaf4b332e5";
+      };
+      symlinks = {
+        "mods" = "${modpack}/mods";
+        "dynmap/configuration.txt" = "${modpack}/dynmap/configuration.txt";
       };
     };
   };

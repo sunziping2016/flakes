@@ -1,0 +1,13 @@
+name = "Modpack Ziping"
+author = "Ziping Sun <me@szp.io>"
+version = "0.1.0"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = "06a3c2a7d2358809e98154263b126b3f3551b7a24fb8bfe0dc14c2586792866b"
+
+[versions]
+fabric = "0.15.7"
+minecraft = "1.20.4"
