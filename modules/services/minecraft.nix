@@ -1,6 +1,8 @@
 { inputs, lib, config, pkgs, ... }:
 with lib;
 let
+  root = ./minecraft;
+
   fetchLocalPackwizModpack =
     { root
     , ...
@@ -22,8 +24,8 @@ let
 
   cfg = config.my-services.minecraft-server;
   modpack = fetchLocalPackwizModpack rec {
-    root = ./minecraft;
     packHash = "sha256-HkHtz6TWIM1k8TfOrJKrn0lSSNg4KasXJjc9HSdS5+A=";
+    inherit root;
   };
   mcVersion = modpack.manifest.versions.minecraft;
   fabricVersion = modpack.manifest.versions.fabric;
@@ -72,7 +74,7 @@ in
       };
       symlinks = {
         "mods" = "${modpack}/mods";
-        "dynmap/configuration.txt" = "${modpack}/dynmap/configuration.txt";
+        "dynmap/configuration.txt" = "${root}/dynmap/configuration.txt";
       };
     };
   };

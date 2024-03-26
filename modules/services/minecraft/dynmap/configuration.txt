@@ -341,10 +341,10 @@ importpath: import
 
 # The network-interface the webserver will bind to (0.0.0.0 for all interfaces, 127.0.0.1 for only local access).
 # If not set, uses same setting as server in server.properties (or 0.0.0.0 if not specified)
-#webserver-bindaddress: 0.0.0.0
+webserver-bindaddress: 127.0.0.1
 
 # The TCP-port the webserver will listen on.
-webserver-port: 8123
+webserver-port: 25567
 
 # Maximum concurrent session on internal web server - limits resources used in Bukkit server
 max-sessions: 30
