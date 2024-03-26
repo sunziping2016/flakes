@@ -81,6 +81,7 @@
 
               imports = [ ./nixos/${node.config or node.hostname} ];
               nixpkgs.system = "${node.arch}-linux";
+              networking.hostName = node.hostname;
             }
           )
           nodes)
