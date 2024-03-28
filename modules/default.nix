@@ -15,6 +15,8 @@
       ./services/sing-box.nix
       ./services/minecraft.nix
       ./services/nginx.nix
+      #### virtualization ####
+      ./virtualization/arion.nix
     ];
 
     my-services.sing-box.enable = true;
