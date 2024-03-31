@@ -10,15 +10,14 @@
     ];
   };
 
-  # services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
 
-  # hardware.nvidia = {
-  #   modesetting.enable = true;
-
-  #   open = false;
-  #   nvidiaSettings = true;
-  # };
+  hardware.nvidia = {
+    modesetting.enable = true;
+    open = false;
+    nvidiaSettings = true;
+  };
 
   # virtualisation.podman.enableNvidia = true;
 }

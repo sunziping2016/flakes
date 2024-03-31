@@ -10,12 +10,12 @@
 }:
 stdenv.mkDerivation rec {
   pname = "ossfs";
-  version = "1.91.1";
+  version = "1.91.2";
   src = fetchFromGitHub {
     owner = "aliyun";
     repo = "ossfs";
     rev = "v${version}";
-    sha256 = "sha256-RsnMgfH+itU+6RnLQ/zA5K2LsffU3fsAEOHG/D4cvT8=";
+    sha256 = "sha256-XsfyuE0f2LeAaywVzEedeBVnGWOcZP1UXSJRKwnIcUo=";
   };
 
   buildInputs = [ fuse curl libxml2 openssl ];

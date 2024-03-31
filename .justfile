@@ -9,7 +9,8 @@ apply-local:
 apply-remote *FLAGS:
     colmena apply --no-substitute {{ FLAGS }}
 
-upgrade:
+update:
     nix-update --flake terraform-providers.authentik
     nix-update --flake terraform-providers.ldap
     nix-update --flake ossfs
+    nix-update --flake seafile-pro-server --version "$(pkgs/seafile-pro-server/update.nu)"

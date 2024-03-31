@@ -43,8 +43,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
+    dream2nix = {
+      url = "github:nix-community/dream2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
-  outputs = { self, flake-utils, nixpkgs, devenv, ... }@inputs:
+  outputs = { self, flake-utils, nixpkgs, devenv, dream2nix, ... }@inputs:
     let
       lib = nixpkgs.lib;
       modules = import ./modules;
@@ -82,6 +86,7 @@
               imports = [ ./nixos/${node.config or node.hostname} ];
               nixpkgs.system = "${node.arch}-linux";
               networking.hostName = node.hostname;
+              networking.hosts = lib.concatMapAttrs (k: v: { "${v}" = [ k ]; }) (node.peers or { });
             }
           )
           nodes)
@@ -125,7 +130,14 @@
       };
       nixosModules = modules.nixosModules;
       homeManagerModules = modules.homeManagerModules;
-      overlays.default = this.overlay;
+      overlays.default = lib.composeExtensions this.overlay (self: super:
+        dream2nix.lib.importPackages {
+          projectRoot = ./.;
+          projectRootFile = "flake.nix";
+          packagesDir = ./dream-pkgs;
+          packageSets.nixpkgs = super;
+        }
+      );
       nixosConfigurations =
         {
           desktop = import ./nixos/desktop {

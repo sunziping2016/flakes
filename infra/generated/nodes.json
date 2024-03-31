@@ -1,1 +1,1 @@
-[{"arch":"x86_64","hostname":"aliyun-hz0","ssh":{"host":"hz0.szp15.com"}},{"arch":"x86_64","hostname":"aliyun-hz1","ssh":{"host":"hz1.szp15.com"}}]
+[{"arch":"x86_64","hostname":"aliyun-hz0","peers":{"aliyun-hz1":"172.16.0.111"},"ssh":{"host":"hz0.szp15.com"}},{"arch":"x86_64","hostname":"aliyun-hz1","peers":{"aliyun-hz0":"172.16.0.112"},"ssh":{"host":"hz1.szp15.com"}}]

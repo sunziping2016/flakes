@@ -46,11 +46,17 @@ locals {
       hostname = "aliyun-hz0"
       ssh      = { host = "hz0.szp15.com" }
       arch     = "x86_64"
+      peers = {
+        aliyun-hz1 = alicloud_instance.hz1.private_ip
+      }
     },
     {
       hostname = "aliyun-hz1"
       ssh      = { host = "hz1.szp15.com" }
       arch     = "x86_64"
+      peers = {
+        aliyun-hz0 = alicloud_instance.hz0.private_ip
+      }
     }
   ]
 }

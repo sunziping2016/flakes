@@ -8,7 +8,7 @@
     ./hardware.nix
     ./nvidia.nix
     ./xfce.nix
-    ./ldap.nix
+    # ./ldap.nix
   ];
 
   # For cross compile

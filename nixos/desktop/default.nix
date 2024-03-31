@@ -14,6 +14,7 @@ inputs.nixpkgs.lib.nixosSystem {
     }
     inputs.impermanence.nixosModules.impermanence
     inputs.sops-nix.nixosModules.sops
+    { nixpkgs.overlays = [ self.overlays.default ]; }
   ];
   specialArgs = { inherit self inputs; };
 }
