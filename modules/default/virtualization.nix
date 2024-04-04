@@ -1,4 +1,4 @@
-{ lib, config, inputs, ... }:
+{ lib, config, inputs, pkgs, ... }:
 let
   cfg = config.environment.virtualization;
 in
@@ -20,6 +20,8 @@ with lib;
         defaultNetwork.settings = mkIf cfg.network.enable {
           dns_enabled = true;
         };
+        dockerSocket.enable = true;
+        dockerCompat = true;
       };
       containers = {
         storage.settings = {
@@ -48,5 +50,9 @@ with lib;
         };
       };
     };
+
+    environment.systemPackages = with pkgs; [
+      docker-compose
+    ];
   };
 }

@@ -30,6 +30,8 @@ let
   mcVersion = modpack.manifest.versions.minecraft;
   fabricVersion = modpack.manifest.versions.fabric;
   serverVersion = lib.replaceStrings [ "." ] [ "_" ] "fabric-${mcVersion}";
+
+  opts = builtins.fromTOML (builtins.readFile ./minecraft.toml);
 in
 {
   imports = [ inputs.nix-minecraft.nixosModules.minecraft-servers ];
@@ -67,11 +69,7 @@ in
         motd = ''\u00A7e\u00A7oZiping Sun's\u00A7r Minecraft Server\u00A7r\n\u00A72\u00A7lHappy \u00A7kCrafting!'';
         white-list = true;
       };
-      whitelist = {
-        "aaaaaaaqie" = "fc50c689-79e1-46d1-87b0-63b7234eacb7";
-        "sunziping2016" = "78b7406b-834b-42a7-948a-0a8087b6932e";
-        "Forev3rNAlway5" = "cc64d967-bf1f-43a8-bbee-2eaaf4b332e5";
-      };
+      whitelist = lib.listToAttrs (lib.lists.map (x: { name = x.name; value = x.id; }) opts.users);
       symlinks = {
         "mods" = "${modpack}/mods";
         "dynmap/configuration.txt" = "${root}/dynmap/configuration.txt";
