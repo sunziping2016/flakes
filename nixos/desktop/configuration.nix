@@ -15,8 +15,16 @@
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.memtest86.enable = true;
+  boot.loader.timeout = 1;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/efi";
+
+  boot.kernelParams = [ "console=ttyS0,115200n8" "console=tty" ];
+  services.journald.extraConfig = ''
+    ForwardToConsole=yes
+    TTYPath=/dev/ttyS0
+  '';
 
   networking = {
     hostName = "nixos";

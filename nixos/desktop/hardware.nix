@@ -39,6 +39,6 @@ in
   # networking.useDHCP = lib.mkDefault true;
   # nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   # powerManagement.cpuFreqGovernor = lib.mkDefault "performance";
-  hardware.enableRedistributableFirmware = true;
+  hardware.enableAllFirmware = true;
   hardware.cpu.intel.updateMicrocode = true;
 }

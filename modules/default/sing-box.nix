@@ -2,7 +2,7 @@
 let
   cfg = config.environment.sing-box;
   settings = {
-    log.level = "info";
+    log.level = "warn";
     experimental.cache_file = {
       enabled = true;
       path = "/var/cache/sing-box/cache.db";
