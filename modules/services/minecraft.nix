@@ -34,9 +34,6 @@ let
   opts = builtins.fromTOML (builtins.readFile ./minecraft.toml);
 in
 {
-  imports = [ inputs.nix-minecraft.nixosModules.minecraft-servers ];
-
-
   options.my-services.minecraft-server = {
     enable = mkEnableOption "Enable Minecraft Fabric Server";
   };

@@ -4,8 +4,13 @@ keys:
   - &host_aliyun_hz0 age1vqa7g2vvt28jnxlaqp96qshc4v2recm27gq4sd7t35kcfzjmzcmseppr6e
   - &host_aliyun_hz1 age169cnhm3cszg5mxs35w8v4a28rzrfajyhjemyxsfm9h3syuker39qt03t2c
 creation_rules:
+  - path_regex: /aliyun-hz1/secrets\.yaml$
+    key_groups:
+      - pgp:
+          - *user_sun
+        age:
+          - *host_aliyun_hz1
   # TODO: add a backup key
-  # Environment variables secrets
   - path_regex: tf\.secrets\.(yaml|json|env)$
     key_groups:
       - pgp:

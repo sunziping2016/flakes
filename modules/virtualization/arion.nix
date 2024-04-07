@@ -4,10 +4,6 @@ let
 in
 with lib;
 {
-  imports = [
-    inputs.arion.nixosModules.arion
-  ];
-
   options.my-virtualization.arion = {
     enable = mkEnableOption "Enable podman with Btrfs storage";
     network.enable = mkEnableOption "Enable DNS on default bridge";

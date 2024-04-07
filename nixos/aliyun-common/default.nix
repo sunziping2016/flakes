@@ -6,4 +6,6 @@
     self.nixosModules.ng
     inputs.impermanence.nixosModules.impermanence
   ];
+
+  my-services.sing-box.enable = true;
 }

@@ -13,8 +13,8 @@ inputs.nixpkgs.lib.nixosSystem {
       home-manager.extraSpecialArgs = { inherit self inputs; };
     }
     inputs.impermanence.nixosModules.impermanence
-    inputs.sops-nix.nixosModules.sops
     { nixpkgs.overlays = [ self.overlays.default ]; }
+    self.nixosModules.ng
   ];
   specialArgs = { inherit self inputs; };
 }

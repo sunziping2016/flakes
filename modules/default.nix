@@ -3,23 +3,20 @@
   nixosModules.ng = { inputs, ... }: {
     imports = [
       inputs.sops-nix.nixosModules.sops
-      # setup nix
+      inputs.arion.nixosModules.arion
+      inputs.nix-minecraft.nixosModules.minecraft-servers
+      # unconditional config
       ./nix/settings.nix
       ./nix/registry.nix
-      # use systemd for network
       ./networking/systemd.nix
-      #### config ####
-      # uid & gid
+      ./services/nginx.nix
       ./misc/ids.nix
-      #### services ####
+      # optional config
       ./services/sing-box.nix
       ./services/minecraft.nix
-      ./services/nginx.nix
-      #### virtualization ####
+      ./services/openldap.nix
       ./virtualization/arion.nix
     ];
-
-    my-services.sing-box.enable = true;
   };
   homeManagerModules.nvim = import ./nvim;
 }
