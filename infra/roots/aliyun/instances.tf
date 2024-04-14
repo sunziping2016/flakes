@@ -11,6 +11,8 @@ module "security_group_hz" {
     https_ipv6 = { port_range = "443/443", ipv6_cidr_ip = "::/0" }
     mc_ipv4    = { port_range = "25565/25565", cidr_ip = "0.0.0.0/0" }
     mc_ipv6    = { port_range = "25565/25565", ipv6_cidr_ip = "::/0" }
+    wg_ipv4    = { ip_protocol = "udp", port_range = "51820/51820", cidr_ip = "0.0.0.0/0" }
+    wg_ipv6    = { ip_protocol = "udp", port_range = "51820/51820", ipv6_cidr_ip = "::/0" }
   }
 }
 
@@ -43,20 +45,29 @@ resource "alicloud_instance" "hz1" {
 locals {
   nodes = [
     {
-      hostname = "aliyun-hz0"
-      ssh      = { host = "hz0.szp15.com" }
-      arch     = "x86_64"
+      hostname   = "aliyun-hz0"
+      ssh        = { host = "hz0.szp15.com" }
+      arch       = "x86_64"
+      private_ip = alicloud_instance.hz0.private_ip
       peers = {
         aliyun-hz1 = alicloud_instance.hz1.private_ip
       }
     },
     {
-      hostname = "aliyun-hz1"
-      ssh      = { host = "hz1.szp15.com" }
-      arch     = "x86_64"
+      hostname   = "aliyun-hz1"
+      ssh        = { host = "hz1.szp15.com" }
+      arch       = "x86_64"
+      private_ip = alicloud_instance.hz1.private_ip
       peers = {
         aliyun-hz0 = alicloud_instance.hz0.private_ip
       }
+    }
+  ]
+  networks = [
+    {
+      gateway     = "aliyun-hz0"
+      destination = module.vpc_hz.cidr_block
+
     }
   ]
 }

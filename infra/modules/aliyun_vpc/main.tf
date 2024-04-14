@@ -16,6 +16,6 @@ resource "alicloud_vswitch" "this" {
   vpc_id               = alicloud_vpc.this.id
   zone_id              = each.value.zone_id
   enable_ipv6          = true
-  cidr_block           = cidrsubnet(alicloud_vpc.this.cidr_block, 12, each.value.netnum)
+  cidr_block           = cidrsubnet(alicloud_vpc.this.cidr_block, var.vswitch_newbits, each.value.netnum)
   ipv6_cidr_block_mask = 64
 }

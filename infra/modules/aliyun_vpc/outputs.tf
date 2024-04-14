@@ -9,3 +9,7 @@ output "vswhitch_ids" {
 output "route_table_id" {
   value = alicloud_vpc.this.route_table_id
 }
+
+output "cidr_block" {
+  value = alicloud_vpc.this.cidr_block
+}

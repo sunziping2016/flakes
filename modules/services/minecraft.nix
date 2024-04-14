@@ -58,6 +58,8 @@ in
     users.groups.minecraft.gid = config.ids.gids.minecraft;
 
     services.minecraft-servers.servers.default = {
+      # /gamerule playersSleepingPercentage 0
+      # /carpet setDefault defaultLoggers mobcaps,tps
       enable = true;
       package = pkgs.fabricServers.${serverVersion}.override { loaderVersion = fabricVersion; };
       serverProperties = {

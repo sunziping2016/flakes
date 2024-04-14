@@ -9,6 +9,9 @@ terraform {
 resource "alicloud_security_group" "this" {
   description = "OpenTofu security group"
   vpc_id      = var.vpc_id
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "alicloud_security_group_rule" "this" {

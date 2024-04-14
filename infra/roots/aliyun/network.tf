@@ -1,6 +1,6 @@
 module "vpc_hz" {
   source     = "../../modules/aliyun_vpc"
-  cidr_block = "172.16.0.0/12"
+  cidr_block = "172.16.0.0/18"
   vswitches = {
     h = { zone_id = "cn-hangzhou-h", netnum = 0 }
   }
