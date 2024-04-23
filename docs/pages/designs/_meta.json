@@ -1,0 +1,7 @@
+{
+  "-- Networking": {
+    "type": "separator",
+    "title": "Networking"
+  },
+  "wireguard-overlay-network": ""
+}

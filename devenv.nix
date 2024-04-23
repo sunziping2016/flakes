@@ -12,6 +12,9 @@ in
   enterShell = ''
     export PATH=$PATH:$PWD/scripts
   '';
+
+  languages.javascript.enable = true;
+
   # This is your devenv configuration
   packages = with pkgs; [
     colmena

@@ -1,0 +1,10 @@
+{
+  "index": {
+    "type": "page",
+    "display": "hidden"
+  },
+  "designs": {
+    "type": "page",
+    "title": "Designs"
+  }
+}
