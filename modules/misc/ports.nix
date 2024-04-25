@@ -1,8 +1,7 @@
 # from https://github.com/linyinfeng/dotfiles/blob/main/nixos/modules/misc/ports.nix
 { config, lib, ... }:
 {
-
-  options = lib.mkOption {
+  options.ports = lib.mkOption {
     type = with lib.types; attrsOf port;
     default = { };
   };
@@ -23,6 +22,8 @@
     ports = {
       minecraft = 25565;
       minecraft-map = 25567;
+      wireguard = 51820;
+      headscale = 30000;
     };
   };
 }

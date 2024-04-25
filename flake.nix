@@ -53,7 +53,6 @@
       lib = nixpkgs.lib;
       modules = import ./modules;
 
-      nodes = lib.importJSON ./infra/generated/nodes.json;
       hive = {
         meta = {
           specialArgs = {
@@ -74,9 +73,9 @@
         };
       } //
       (
-        lib.listToAttrs (lib.lists.map
-          (node: lib.nameValuePair node.hostname
-            {
+        lib.pipe (lib.importJSON ./infra/generated/nodes.json) [
+          (lib.lists.map (node:
+            lib.nameValuePair node.hostname {
               deployment = {
                 targetHost = node.ssh.host or null;
                 targetUser = node.ssh.user or "root";
@@ -86,10 +85,10 @@
               imports = [ ./nixos/${node.config or node.hostname} ];
               nixpkgs.system = "${node.arch}-linux";
               networking.hostName = node.hostname;
-              networking.hosts = lib.concatMapAttrs (k: v: { "${v}" = [ k ]; }) (node.peers or { });
             }
-          )
-          nodes)
+          ))
+          lib.listToAttrs
+        ]
       );
 
       this = import ./pkgs;
@@ -142,6 +141,7 @@
         {
           desktop = import ./nixos/desktop {
             system = "x86_64-linux";
+            hostname = "desktop";
             inherit self inputs;
           };
         } //

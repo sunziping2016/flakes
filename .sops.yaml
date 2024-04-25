@@ -4,14 +4,26 @@ keys:
   - &host_aliyun_hz0 age157z6a5nzx8myrgqatmzwpd76srxy59xvzpk95fn83hu8ss8j9eyssu03vr
   - &host_aliyun_hz1 age1d6zx2svldrydqs3qscu90nf6xswleh22273xe895llvmu709qaqqgu55jr
 creation_rules:
-  - path_regex: /aliyun-hz1/secrets\.yaml$
+  - path_regex: ^nixos/desktop/
+    key_groups:
+      - pgp:
+          - *user_sun
+        age:
+          - *host_desktop
+  - path_regex: ^nixos/aliyun-hz0/
+    key_groups:
+      - pgp:
+          - *user_sun
+        age:
+          - *host_aliyun_hz0
+  - path_regex: ^nixos/aliyun-hz1/
     key_groups:
       - pgp:
           - *user_sun
         age:
           - *host_aliyun_hz1
   # TODO: add a backup key
-  - path_regex: tf\.secrets\.(yaml|json|env)$
+  - path_regex: ^infra/
     key_groups:
       - pgp:
           - *user_sun

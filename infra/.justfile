@@ -12,7 +12,7 @@ fmt:
 [no-exit-message]
 @_tofu *args:
     @# (sensitive dotenv) tofu {{ args }}
-    env $(sops --decrypt "{{ justfile_directory() }}/tf.secrets.env" | xargs) tofu "$@"
+    env $(sops --decrypt "{{ justfile_directory() }}/secrets.env" | xargs) tofu "$@"
 
 [no-exit-message]
 init *args:

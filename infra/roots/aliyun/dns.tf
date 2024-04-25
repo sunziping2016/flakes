@@ -19,7 +19,8 @@ module "szp15" {
     file     = { host_record = "file", type = "CNAME", value = "zjk0.szp15.com" }
     "@"      = { host_record = "@", type = "CNAME", value = "zjk0.szp15.com" }
 
-    mc  = { host_record = "mc", type = "CNAME", value = "hz0.szp15.com" }
-    map = { host_record = "map", type = "CNAME", value = "hz0.szp15.com" }
+    mc        = { host_record = "mc", type = "CNAME", value = "hz0.szp15.com" }
+    map       = { host_record = "map", type = "CNAME", value = "hz0.szp15.com" }
+    headscale = { host_record = "headscale", type = "CNAME", value = "hz0.szp15.com" }
   }
 }

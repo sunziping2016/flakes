@@ -1,12 +1,11 @@
 {
   packages = pkgs: {
-    terraform-providers = {
-      inherit (pkgs.terraform-providers) authentik ldap;
-    };
+    terraform-provider-authentik = pkgs.terraform-providers.authentik;
+    terraform-provider-ldap = pkgs.terraform-providers.ldap;
+
+    seasrv-pro = pkgs.python3Packages.seaserv-pro;
+
     inherit (pkgs) ossfs seafile-pro-server seahub-pro;
-    python311Packages = {
-      inherit (pkgs.python3Packages) seaserv-pro;
-    };
   };
   overlay = self: super:
     let

@@ -11,12 +11,17 @@
       ./networking/systemd.nix
       ./services/nginx.nix
       ./misc/ids.nix
+      ./misc/ports.nix
       # optional config
       ./services/sing-box.nix
       ./services/minecraft.nix
       ./services/openldap.nix
+      ./services/headscale.nix
+      ./services/tailscale.nix
       ./virtualization/arion.nix
     ];
+
+    my-services.tailscale.enable = true;
   };
   homeManagerModules.nvim = import ./nvim;
 }

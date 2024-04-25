@@ -26,10 +26,7 @@
     TTYPath=/dev/ttyS0
   '';
 
-  networking = {
-    hostName = "nixos";
-    wireless.iwd.enable = true;
-  };
+  networking.wireless.iwd.enable = true;
 
   time.timeZone = "Asia/Shanghai";
 

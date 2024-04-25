@@ -1,4 +1,4 @@
-{ self, system, inputs, ... }:
+{ self, system, inputs, hostname, ... }:
 inputs.nixpkgs.lib.nixosSystem {
   inherit system;
   modules = [
@@ -15,6 +15,7 @@ inputs.nixpkgs.lib.nixosSystem {
     inputs.impermanence.nixosModules.impermanence
     { nixpkgs.overlays = [ self.overlays.default ]; }
     self.nixosModules.ng
+    { networking.hostName = hostname; }
   ];
   specialArgs = { inherit self inputs; };
 }
