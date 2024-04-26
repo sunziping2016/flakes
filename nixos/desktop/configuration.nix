@@ -20,11 +20,11 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/efi";
 
-  boot.kernelParams = [ "console=ttyS0,115200n8" "console=tty" ];
-  services.journald.extraConfig = ''
-    ForwardToConsole=yes
-    TTYPath=/dev/ttyS0
-  '';
+  # boot.kernelParams = [ "console=ttyS0,115200n8" "console=tty" ];
+  # services.journald.extraConfig = ''
+  #   ForwardToConsole=yes
+  #   TTYPath=/dev/ttyS0
+  # '';
 
   networking.wireless.iwd.enable = true;
 
