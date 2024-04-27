@@ -60,10 +60,10 @@
   services.xserver = {
     enable = true;
     desktopManager.xfce.enable = true;
-    displayManager.defaultSession = "xfce";
     # See microsoft/vscode#23991 to make VS Code follow the keyboard mappings.
     xkb.options = "caps:escape";
   };
+  services.displayManager.defaultSession = "xfce";
   xdg.portal = {
     enable = true;
     extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
@@ -133,8 +133,8 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     # extra man pages
-    pkgs.man-pages
-    pkgs.man-pages-posix
+    man-pages
+    man-pages-posix
   ];
   programs._1password-gui.enable = true;
 
