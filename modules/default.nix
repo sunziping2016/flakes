@@ -18,6 +18,7 @@
       ./services/openldap.nix
       ./services/headscale.nix
       ./services/tailscale.nix
+      ./services/keycloak.nix
       ./virtualization/arion.nix
     ];
 

@@ -22,5 +22,6 @@ module "szp15" {
     mc        = { host_record = "mc", type = "CNAME", value = "hz0.szp15.com" }
     map       = { host_record = "map", type = "CNAME", value = "hz0.szp15.com" }
     headscale = { host_record = "headscale", type = "CNAME", value = "hz0.szp15.com" }
+    auth      = { host_record = "auth", type = "CNAME", value = "hz1.szp15.com" }
   }
 }

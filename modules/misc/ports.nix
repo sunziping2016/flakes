@@ -24,6 +24,7 @@
       minecraft-map = 25567;
       wireguard = 51820;
       headscale = 30000;
+      keycloak = 30001;
     };
   };
 }
