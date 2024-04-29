@@ -24,7 +24,7 @@ let
 
   cfg = config.my-services.minecraft-server;
   modpack = fetchLocalPackwizModpack {
-    packHash = "sha256-BpR/jNo/PLl0pCmQOS8lGP9ygR7HgWZs1I7Phu2J/ZA=";
+    packHash = "sha256-RV26YPW2qLwYGeD9LADN+vle6UJHvV2iEP4WbljNXX0=";
     inherit root;
   };
   mcVersion = modpack.manifest.versions.minecraft;
