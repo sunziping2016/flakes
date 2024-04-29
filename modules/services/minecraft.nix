@@ -1,4 +1,4 @@
-{ inputs, lib, config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 with lib;
 let
   root = ./minecraft;
@@ -23,8 +23,8 @@ let
     });
 
   cfg = config.my-services.minecraft-server;
-  modpack = fetchLocalPackwizModpack rec {
-    packHash = "sha256-HkHtz6TWIM1k8TfOrJKrn0lSSNg4KasXJjc9HSdS5+A=";
+  modpack = fetchLocalPackwizModpack {
+    packHash = "sha256-BpR/jNo/PLl0pCmQOS8lGP9ygR7HgWZs1I7Phu2J/ZA=";
     inherit root;
   };
   mcVersion = modpack.manifest.versions.minecraft;
