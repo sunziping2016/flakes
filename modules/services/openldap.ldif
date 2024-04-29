@@ -1,0 +1,19 @@
+# nix shell p#openldap --command ldapadd -H ldap://aliyun-hz1 -x -D cn=admin,dc=szp,dc=io -W -f modules/services/openldap.ldif
+# example.org
+dn: dc=szp,dc=io
+dc: szp
+o: Ziping Sun Personal
+objectClass: dcObject
+objectClass: organization
+
+# users OU
+dn: ou=users,dc=szp,dc=io
+ou: users
+objectClass: top
+objectClass: organizationalUnit
+
+# groups OU
+dn: ou=groups,dc=szp,dc=io
+ou: groups
+objectClass: top
+objectClass: organizationalUnit

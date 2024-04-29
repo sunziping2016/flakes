@@ -21,42 +21,31 @@ in
 
       settings = {
         attrs = {
-          olcLogLevel = "conns config";
+          olcLogLevel = "0";
         };
         children = {
           "cn=schema".includes = [
             "${pkgs.openldap}/etc/schema/core.ldif"
             "${pkgs.openldap}/etc/schema/cosine.ldif"
             "${pkgs.openldap}/etc/schema/inetorgperson.ldif"
+            "${pkgs.openldap}/etc/schema/nis.ldif"
           ];
 
           "olcDatabase={1}mdb".attrs = {
             objectClass = [ "olcDatabaseConfig" "olcMdbConfig" ];
-
             olcDatabase = "{1}mdb";
             olcDbDirectory = "/var/lib/openldap/data";
-
-            olcSuffix = "dc=szp,dc=io";
-
-            /* your admin account, do not use writeText on a production system */
-            olcRootDN = "cn=admin,dc=szp,dc=io";
             olcRootPW.path = cfg.rootPasswordFile;
-
-            olcDbIndex = [
-              "objectClass eq,pres"
-              "ou,cn,mail,surname,givenname eq,pres,sub"
-            ];
-
+            olcRootDN = "cn=admin,dc=szp,dc=io";
+            olcSuffix = "dc=szp,dc=io";
             olcAccess = [
               /* custom access rules for userPassword attributes */
               ''{0}to attrs=userPassword
-                by self write
-                by * none''
+                  by self write
+                  by anonymous auth
+                  by * none''
 
-              /* allow read on anything else */
-              ''{1}to *
-                by anonymous none
-                by * read''
+              ''{1}to * by * read''
             ];
           };
         };
