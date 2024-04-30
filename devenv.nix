@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 let
   my-opentofu = pkgs.opentofu.withPlugins (ps: with ps; [
     sops
@@ -6,6 +6,7 @@ let
     authentik
     ldap
     local
+    keycloak
   ]);
 in
 {
