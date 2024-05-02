@@ -1,6 +1,6 @@
 import nextra from "nextra";
 
-const firstPage = "/designs/wireguard-overlay-network";
+const firstPage = "/designs";
 
 const withNextra = nextra({
   theme: "nextra-theme-docs",

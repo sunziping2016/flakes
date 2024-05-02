@@ -11,8 +11,8 @@ module "security_group_hz" {
     https_ipv6 = { port_range = "443/443", ipv6_cidr_ip = "::/0" }
     mc_ipv4    = { port_range = "25565/25565", cidr_ip = "0.0.0.0/0" }
     mc_ipv6    = { port_range = "25565/25565", ipv6_cidr_ip = "::/0" }
-    wg_ipv4    = { ip_protocol = "udp", port_range = "51820/51820", cidr_ip = "0.0.0.0/0" }
-    wg_ipv6    = { ip_protocol = "udp", port_range = "51820/51820", ipv6_cidr_ip = "::/0" }
+    stun_ipv4  = { ip_protocol = "udp", port_range = "3478/3478", cidr_ip = "0.0.0.0/0" }
+    stun_ipv6  = { ip_protocol = "udp", port_range = "3478/3478", ipv6_cidr_ip = "::/0" }
   }
 }
 

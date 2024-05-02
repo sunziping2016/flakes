@@ -1,7 +1,14 @@
 {
-  "-- Networking": {
+  "index": "",
+  "-- Development": {
     "type": "separator",
-    "title": "Networking"
+    "title": "Development"
   },
-  "wireguard-overlay-network": ""
+  "repository-management": "",
+  "-- Services": {
+    "type": "separator",
+    "title": "Services"
+  },
+  "overlay-network": "",
+  "identity-provider": ""
 }

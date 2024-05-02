@@ -15,6 +15,7 @@ in
   '';
 
   languages.javascript.enable = true;
+  languages.javascript.npm.enable = true;
 
   # This is your devenv configuration
   packages = with pkgs; [

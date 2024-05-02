@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useConfig } from "nextra-theme-docs";
 
 const title = "Ziping's Infra Documentation";

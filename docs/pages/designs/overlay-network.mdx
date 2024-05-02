@@ -1,0 +1,117 @@
+---
+title: Overlay Network
+---
+
+# Overlay Network
+
+## Background
+
+### Motivation
+
+1. provide connectivity for a hybrid cloud architecture (multiple cloud providers + local machines)
+2. enable GitHub runners to access private resources [^github-tailscale]
+3. secure the private resources. Despite that, we'll always follow the zero trust principle.
+
+### Useful Links
+
+1. [mikeroyal/WireGuard-Guide: WireGuard Guide](https://github.com/mikeroyal/WireGuard-Guide)
+2. [Headscale](https://headscale.net/)
+3. [Nebula: Open Source Overlay Networking | Nebula Docs](https://nebula.defined.net/docs/)
+4. [Getting Started with ZeroTier | ZeroTier Documentation](https://docs.zerotier.com/)
+5. [用 Nebula 创建私人局域网 | Tommy 的自留地](https://tommy.net.cn/2021/09/12/build-your-own-sd-lan-by-nebula/)
+6. [这么良心的开源、内网穿透工具ZeroTier，为啥到你手就不好用了？_哔哩哔哩_bilibili](https://www.bilibili.com/video/BV1oL411Y7pB/?share_source=copy_web&vd_source=f57e8c507650e4abc863eed3203c0847)
+
+
+## Consideration
+
+### Which framework to use?
+
+| Framework | Pros | Cons |
+| --- | --- | --- |
+| Nebula | | not good at NAT traversal |
+| ZeroTier | decentralized; Layer 2; a large number of Chinese users | not friendly to commercial use |
+| Tailscale | SSO; all platforms; recommended by NixOS CN users | |
+
+I'd like to try Tailscale first. ZeroTier can be a backup plan. They provide similar features.
+
+I'd like to use a self-hosted Headscale server as the control plane for Tailscale clients.
+
+### DNS for Service Discovery
+
+**Tailscale DNS limitations**
+Tailscale resolves DNS queries at the client side. It doesn't support CNAME records [^tailscale-cname].
+Tailscale offer stable IP addresses to each node, but these IP addresses cannot be arbitrarily assigned by admins [^tailscale-ip].
+The FQDN for each node is `$hostname.$user.$base_domain`, and the search domain `$user.$base_domain` is advertised from Headscale to all the clients [^headscale-example].
+
+There is a feature request to enable customizing DNS records in Tailscale [^tailscale-customize],
+Till now an `extra_records` option, which supports only A and AAAA records, has been added to Tailscale [^headscale-extra-records].
+No other progress has been made on this feature request.
+Some others tried to use CoreDNS to solve this problem [^tailscale-coredns].
+
+**Solutions**
+
+| Solution | Pros | Cons |
+| --- | --- | --- |
+| Static Configuration based on `extra_records` | simple | Headscale restarts to apply new config |
+| CoreDNS | flexible | complex; few users |
+
+I'd like to use the static configuration based on `extra_records` first.
+
+### SSO & ACLs
+
+Headscale extract the username from the `email` token claim [^headscale-username].
+Currently Headscale has a one-to-one mapping between Tailnet and user, which makes ACLs quite useless [^headscale-acls].
+
+I'd like to use SSO for easier login, especially on mobile devices. I don't need ACLs for now.
+
+| Configuration entry | Value |
+| --- | --- |
+| `base_domain` | `internal.szp.io` |
+
+### NAT Traversal
+
+The default DERP relay servers, provided by Tailscale, are all located outside China.
+As a result, the DERP traffic can be easily blocked by the GFW.
+
+So I'd like to use self-hosted DERP servers.
+
+### GFW Traversal
+
+If one node is in China, while the other is outside China,
+two nodes may connect to each other directly using Wireguard.
+And this can trigger the GFW to block the connection.
+
+I'd like to host (at least) two tailscale networks: one for China, and the other for the rest of the world,
+and join them using [Site-to-site networking · Tailscale Docs](https://tailscale.com/kb/1214/site-to-site) over proxy.
+I can setup multiple subnet routers to achieve high availability [^tailscale-ha].
+
+### Frontend
+
+[gurucomputing/headscale-ui: A web frontend for the headscale Tailscale-compatible coordination server](https://github.com/gurucomputing/headscale-ui)
+provides a static frontend for Headscale.
+
+**CORS issue**
+I don't want to expose the frontend to the public internet.
+To distinguish whether a traffic to frontend is from the public internet or from the overlay network,
+a different domain name pointing to the private IP address in the overlay network is needed.
+However, Headscale doesn't handle CORS properly [^headscale-cors].
+So I have to handle the CORS using Nginx.
+
+### Terraform
+
+A terraform provider for Headscale is available [^headscale-terraform].
+
+## Reference
+
+[^github-tailscale]: [Using WireGuard to create a network overlay - GitHub Docs](https://docs.github.com/en/actions/using-github-hosted-runners/connecting-to-a-private-network/using-wireguard-to-create-a-network-overlay)
+[^tailscale-cname]: [Unable to follow CNAME to magic dns record · Issue #5033 · tailscale/tailscale](https://github.com/tailscale/tailscale/issues/5033).
+[^tailscale-ip]: [How Tailscale assigns IP addresses · Tailscale Docs](https://tailscale.com/kb/1033/ip-and-dns-addresses).
+[^headscale-example]: [headscale/config-example.yaml at 55b35f4160c08323039842ec608e7a1b89c17c51 · juanfont/headscale](https://github.com/juanfont/headscale/blob/55b35f4160c08323039842ec608e7a1b89c17c51/config-example.yaml#L264-L268).
+[^tailscale-customize]: [FR: Support custom records in MagicDNS · Issue #1543 · tailscale/tailscale](https://github.com/tailscale/tailscale/issues/1543).
+[^tailscale-coredns]: [damomurf/coredns-tailscale: A Tailscale lookup plugin for CoreDNS](https://github.com/damomurf/coredns-tailscale)
+[^headscale-extra-records]: [tailcfg: add DNSConfig.ExtraRecords · tailscale/tailscale@0debb99](https://github.com/tailscale/tailscale/commit/0debb99f0852e8fa53ab6c725966f8dd99b3fbc9)
+[^headscale-username]: [headscale/hscontrol/oidc.go at 55b35f4160c08323039842ec608e7a1b89c17c51 · juanfont/headscale](https://github.com/juanfont/headscale/blob/55b35f4160c08323039842ec608e7a1b89c17c51/hscontrol/oidc.go#L538-L560)
+[^headscale-acls]: [ACLs - Headscale](https://headscale.net/proposals/001-acls/#current-implementation-and-issues)
+[^headscale-cors]: [Handle CORS headers and OPTIONS method for HTTP API · Issue #623 · juanfont/headscale](https://github.com/juanfont/headscale/issues/623)
+[^tailscale-ha]: [Set up high availability · Tailscale Docs](https://tailscale.com/kb/1115/high-availability#subnet-router-high-availability)
+[^headscale-terraform]: [Docs overview | awlsring/headscale | Terraform | Terraform Registry](https://registry.terraform.io/providers/awlsring/headscale/latest/docs)

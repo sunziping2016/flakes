@@ -15,7 +15,7 @@ in
       address = "127.0.0.1";
       port = config.ports.headscale;
       settings = {
-        sever_url = "https://${domain}";
+        server_url = "https://${domain}";
         ip_prefixes = [
           "fd7a:115c:a1e0::/48"
           "100.64.0.0/10"
@@ -23,7 +23,24 @@ in
         disable_check_updates = true;
         dns_config = {
           base_domain = "szp.io";
+          extra_records = [
+            {
+              name = "headscale.internal.szp.io";
+              type = "A";
+              value = "100.64.0.1";
+            }
+          ];
         };
+        derp.server = {
+          enabled = true;
+          region_id = 999;
+          region_code = "headscale";
+          region_name = "Headscale Embedded DERP";
+          stun_listen_addr = "0.0.0.0:3478";
+          private_key_path = "/var/lib/headscale/derp_server_private.key";
+          automatically_add_embedded_derp_region = true;
+        };
+        derp.urls = [ ];
       };
     };
 
